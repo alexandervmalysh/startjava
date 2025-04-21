@@ -87,8 +87,8 @@ public class VariableNamesTheme {
         System.out.println("Окончание диапазона = " + rangeEnd);
 
         // Имя работника месяца
-        String employeeOfTheMonth = "Малыш Александр";
-        System.out.println("Имя работника месяца = " + employeeOfTheMonth);
+        String employeeOfMonth = "Малыш Александр";
+        System.out.println("Имя работника месяца = " + employeeOfMonth);
 
         // Название электронной книги
         String ebookTitle = "Изучаем Java";
@@ -117,8 +117,8 @@ public class VariableNamesTheme {
         System.out.println("\n2. Boolean-переменные");
 
         // Сотни равны?
-        boolean hundredsEqual = true;
-        System.out.println("Сотни равны = " + hundredsEqual);
+        boolean isEqualHundreds = true;
+        System.out.println("Сотни равны = " + isEqualHundreds);
 
         // Компьютер включен?
         boolean isComputerOn = true;
@@ -129,16 +129,16 @@ public class VariableNamesTheme {
         System.out.println("Есть равные цифры = " + hasEqualDigits);
 
         // Служба создана?
-        boolean isServiceCreated = true;
-        System.out.println("Служба создана = " + isServiceCreated);
+        boolean isCreatedService = true;
+        System.out.println("Служба создана = " + isCreatedService);
 
         // Файл пустой?
         boolean isEmptyFile = false;
         System.out.println("Файл пустой = " + isEmptyFile);
 
         // Соединение активное?
-        boolean isConnectionActive = true;
-        System.out.println("Соединение активное = " + isConnectionActive);
+        boolean isActiveConnection = true;
+        System.out.println("Соединение активное = " + isActiveConnection);
 
         // Новый?
         boolean isNew = true;
