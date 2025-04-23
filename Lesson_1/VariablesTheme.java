@@ -1,8 +1,14 @@
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalTime;
 
 public class VariablesTheme {
     public static void main(String[] args) {
+        // объявление переменной к задаче 8
+        // засекаем начало выполнения кода
+        LocalTime startTime = LocalTime.now();
+        long startNano = System.nanoTime();
+
         System.out.println("1. Расчет стоимости товара");
         System.out.println("\nПервый способ решения:");
         float penPrice = 105.5f;
@@ -142,5 +148,21 @@ public class VariablesTheme {
         System.out.println("  Версия ОС: " + osVersion);
         System.out.println("  Версия Java: " + javaVersion);
         System.out.println("  Символ разделения пути: '" + fileSeparator + "'");
+
+        System.out.println("\n8. Замер работы кода");
+        long finishNano = System.nanoTime();
+        double durationTime = (finishNano - startNano) / 1_000_000_000.0;
+        LocalTime endTime = LocalTime.now();
+        System.out.printf("Старт проверки: %02d:%02d:%02d.%03d%n", 
+                startTime.getHour(), 
+                startTime.getMinute(),
+                startTime.getSecond(),
+                startTime.getNano() / 1_000_000);
+        System.out.printf("Финиш проверки: %02d:%02d:%02d.%03d%n", 
+                endTime.getHour(), 
+                endTime.getMinute(),
+                endTime.getSecond(),
+                endTime.getNano() / 1_000_000);
+        System.out.printf("Время работы: %.3f сек%n", durationTime);
     }
 }
