@@ -9,7 +9,7 @@ public class VariablesTheme {
         final long startNano = System.nanoTime();
 
         System.out.println("1. Расчет стоимости товара");
-        System.out.println("\nПервый способ решения:");
+        System.out.println("Первый способ решения:");
         float penPrice = 105.5f;
         float bookPrice = 235.23f;
         float dismountRate = 11.0f / 100.0f;
@@ -43,31 +43,31 @@ public class VariablesTheme {
 
         System.out.println("\n3. Тестирование датчиков перед запуском ракеты");
         byte temperature = Byte.MAX_VALUE;
-        short pressure = Short.MAX_VALUE;
-        char systemStatusCode = Character.MAX_VALUE;
-        int travelDistance = Integer.MAX_VALUE;
-        long launchTime = Long.MAX_VALUE;
 
         System.out.println("[Температура, °C]");
         System.out.println("Исходное: " + temperature);
         System.out.println("+1: " + ++temperature);
         System.out.println("-1: " + --temperature);
 
+        short pressure = Short.MAX_VALUE;
         System.out.println("\n[Давление, Па]");
         System.out.println("Исходное: " + pressure);
         System.out.println("+1: " + ++pressure);
         System.out.println("-1: " + --pressure);
 
+        char systemStatusCode = Character.MAX_VALUE;
         System.out.println("\n[Код состояния системы, \\uFFFF]");
-        System.out.println("Исходное: " + systemStatusCode);
-        System.out.println("+1: " + ++systemStatusCode);
-        System.out.println("-1: " + --systemStatusCode);
+        System.out.println("Исходное: " + (int) systemStatusCode);
+        System.out.println("+1: " + (int) ++systemStatusCode);
+        System.out.println("-1: " + (int) --systemStatusCode);
 
+        int travelDistance = Integer.MAX_VALUE;
         System.out.println("\n[Пройденное расстояние, м]");
         System.out.println("Исходное: " + travelDistance);
         System.out.println("+1: " + ++travelDistance);
         System.out.println("-1: " + --travelDistance);
 
+        long launchTime = Long.MAX_VALUE;
         System.out.println("\n[Время с момента старта, с]");
         System.out.println("Исходное: " + launchTime);
         System.out.println("+1: " + ++launchTime);
@@ -86,16 +86,16 @@ public class VariablesTheme {
         System.out.println("Результат: A1 = " + numberOne + ", B1 = " + numberTwo);
 
         System.out.println("\nМетод: арифметических операций");
-        numberOne = numberOne + numberTwo;
+        numberOne += numberTwo;
         numberTwo = numberOne - numberTwo;
-        numberOne = numberOne - numberTwo;
-        System.out.println("Результат: A2 = " + numberOne + ", B2 = " + numberTwo);
+        numberOne -= numberTwo;
+        System.out.println("Результат: A1 = " + numberOne + ", B1 = " + numberTwo);
 
         System.out.println("\nМетод: побитовой операции");
         numberOne ^= numberTwo;
         numberTwo ^= numberOne;
         numberOne ^= numberTwo;
-        System.out.println("Результат: A3 = " + numberOne + ", B3 = " + numberTwo);
+        System.out.println("Результат: A1 = " + numberOne + ", B1 = " + numberTwo);
 
         System.out.println("\n5. Декодирование сообщения");
         int code1 = 1055;
@@ -104,9 +104,8 @@ public class VariablesTheme {
         int code4 = 1074;
         int code5 = 1077;
         int code6 = 1090;
-        System.out.printf("%4d, %4d, %4d, %4d, %4d, %4d%n", code1, code2, code3, code4, code5, code6);
-        System.out.printf("%4c, %4c, %4c, %4c, %4c, %4c%n", (char) code1, (char) code2, (char) code3, 
-                (char) code4, (char) code5, (char) code6);
+        System.out.printf("%4d %4d %4d %4d %4d %4d%n", code1, code2, code3, code4, code5, code6);
+        System.out.printf("%4c %4c %4c %4c %4c %4c%n", code1, code2, code3, code4, code5, code6);
 
         System.out.println("\n6. Анализ кода товара");
         int productCode = 123;
