@@ -5,8 +5,6 @@ import java.time.format.DateTimeFormatter;
 
 public class VariablesTheme {
     public static void main(String[] args) {
-        // объявление переменной к задаче 8
-        // засекаем начало выполнения кода
         final LocalTime startTime = LocalTime.now();
         final long startNano = System.nanoTime();
 
@@ -125,37 +123,33 @@ public class VariablesTheme {
         System.out.println("Проверочный код = " + verificationCode);
 
         System.out.println("\n7. Вывод параметров JVM и ОС");
-        int availableProcessors = Runtime.getRuntime().availableProcessors();
-        long usedMemory = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
-        long freeMemory = Runtime.getRuntime().freeMemory();
-        long maxMemory = Runtime.getRuntime().maxMemory();
-        double usedMemoryMb = usedMemory / (1024.0 * 1024.0);
-        double freeMemoryMb = freeMemory / (1024.0 * 1024.0);
-        double maxMemoryMb = maxMemory / (1024.0 * 1024.0);
+        Runtime rt = Runtime.getRuntime();
+        double conversionMb = 1024.0 * 1024.0;
+        int availableCpus = rt.availableProcessors();
+        double totalMemory = rt.totalMemory() / conversionMb;
+        double usedMemory = (rt.totalMemory() - rt.freeMemory()) / conversionMb;
+        double freeMemory = rt.freeMemory() / conversionMb;
+        double maxMemory = rt.maxMemory() / conversionMb;
 
         System.out.println("Характеристики JVM:");
-        System.out.println("  Доступное число ядер: " + availableProcessors);
-        System.out.printf("  Используемая память: %.2f МБ%n", usedMemoryMb);
-        System.out.printf("  Свободная память: %.2f МБ%n", freeMemoryMb);
-        System.out.printf("  Максимально доступная память: %.2f МБ%n", maxMemoryMb);
-
-        String systemDrive = System.getProperty("user.home");
-        String osVersion = System.getProperty("os.version");
-        String javaVersion = System.getProperty("java.version");
-        String fileSeparator = System.getProperty("file.separator");
+        System.out.println("  Доступное число ядер: " + availableCpus);
+        System.out.printf("  Выделенная память: %.1f МБ%n", totalMemory);
+        System.out.printf("  Свободная память: %.1f МБ%n", freeMemory);
+        System.out.printf("  Используемая память: %.1f МБ%n", usedMemory);
+        System.out.printf("  Максимально доступная память: %.1f МБ%n", maxMemory);
 
         System.out.println("\nПараметры ОС:");
-        System.out.println("  Системный диск: " + systemDrive);
-        System.out.println("  Версия ОС: " + osVersion);
-        System.out.println("  Версия Java: " + javaVersion);
-        System.out.println("  Символ разделения пути: '" + fileSeparator + "'");
+        System.out.println("  Системный диск: " + System.getProperty("user.home"));
+        System.out.println("  Версия ОС: " + System.getProperty("os.version"));
+        System.out.println("  Версия Java: " + System.getProperty("java.version"));
+        System.out.println("  Символ разделения пути: '" + System.getProperty("file.separator") + "'");
 
         System.out.println("\n8. Замер работы кода");
         long finishNano = System.nanoTime();
         double durationTime = (finishNano - startNano) / 1_000_000_000.0;
         LocalTime endTime = LocalTime.now();
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss.SSS");
-        
+
         System.out.println("Старт проверки: " + dtf.format(startTime));
         System.out.println("Финиш проверки: " + dtf.format(endTime));
         System.out.printf("Время работы: %.3f сек%n", durationTime);
