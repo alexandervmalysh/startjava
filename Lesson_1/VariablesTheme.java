@@ -1,6 +1,7 @@
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class VariablesTheme {
     public static void main(String[] args) {
@@ -153,16 +154,10 @@ public class VariablesTheme {
         long finishNano = System.nanoTime();
         double durationTime = (finishNano - startNano) / 1_000_000_000.0;
         LocalTime endTime = LocalTime.now();
-        System.out.printf("Старт проверки: %02d:%02d:%02d.%03d%n", 
-                startTime.getHour(), 
-                startTime.getMinute(),
-                startTime.getSecond(),
-                startTime.getNano() / 1_000_000);
-        System.out.printf("Финиш проверки: %02d:%02d:%02d.%03d%n", 
-                endTime.getHour(), 
-                endTime.getMinute(),
-                endTime.getSecond(),
-                endTime.getNano() / 1_000_000);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss.SSS");
+        
+        System.out.println("Старт проверки: " + dtf.format(startTime));
+        System.out.println("Финиш проверки: " + dtf.format(endTime));
         System.out.printf("Время работы: %.3f сек%n", durationTime);
     }
 }
