@@ -6,8 +6,8 @@ public class VariablesTheme {
     public static void main(String[] args) {
         // объявление переменной к задаче 8
         // засекаем начало выполнения кода
-        LocalTime startTime = LocalTime.now();
-        long startNano = System.nanoTime();
+        final LocalTime startTime = LocalTime.now();
+        final long startNano = System.nanoTime();
 
         System.out.println("1. Расчет стоимости товара");
         System.out.println("\nПервый способ решения:");
