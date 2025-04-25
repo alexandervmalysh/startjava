@@ -10,14 +10,14 @@ public class CyclesTheme {
             }
         }
 
-        System.out.println("2. Вывод геометрических фигур");
+        System.out.println("\n2. Вывод геометрических фигур");
         int dashes = 10;
         int stars = 5;
         int carets = 1;
 
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < dashes; j++) {
-                System.out.print("_");
+                System.out.print("-");
             }
 
             System.out.print(" ");
@@ -37,5 +37,7 @@ public class CyclesTheme {
             stars--;
             carets += 2;
         }
+
+        System.out.println("\n3. Вывод таблицы умножения");
     }
 }
