@@ -39,5 +39,18 @@ public class CyclesTheme {
         }
 
         System.out.println("\n3. Вывод таблицы умножения");
+        System.out.print("  |");
+        for (int i = 2; i <= 9; i++) {
+            System.out.printf("%3d" , i);
+        }
+        System.out.println("\n--+------------------------");
+
+        for (int i = 2; i <= 9; i++) {
+            System.out.print(i + " |");
+            for (int j = 2; j <= 9; j++) {
+                System.out.printf("%3d", i * j);
+            }
+            System.out.println();
+        } 
     }
 }
