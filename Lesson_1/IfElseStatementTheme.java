@@ -69,11 +69,11 @@ public class IfElseStatementTheme {
         System.out.println("Первый способ:");
         System.out.print("Никнейм " + nickname + " начинается ");
 
-        if (firstLetter >= 65 && firstLetter <= 90) {
+        if (firstLetter >= 'A' && firstLetter <= 'Z') {
             System.out.println("с заглавной буквы '" + firstLetter + "'");
-        } else if (firstLetter >= 97 && firstLetter <= 122) {
+        } else if (firstLetter >= 'a' && firstLetter <= 'z') {
             System.out.println("со строчной буквы '" + firstLetter + "'");
-        } else if (firstLetter >= 48 && firstLetter <= 57) {
+        } else if (firstLetter >= '0' && firstLetter <= '9') {
             System.out.println("с цифры '" + firstLetter + "'");
         } else {
             System.out.println("с символа '" + firstLetter + "'");
@@ -87,49 +87,46 @@ public class IfElseStatementTheme {
             System.out.println("со строчной буквы '" + firstLetter + "'");
         } else if (Character.isDigit(firstLetter)) {
             System.out.println("с цифры '" + firstLetter + "'");
-        } else if (!Character.isLetterOrDigit(firstLetter)) {
+        } else {
             System.out.println("с символа '" + firstLetter + "'");
         }
 
         System.out.println("\n5. Инвентаризация");
         int dbSerialNumber = 537;
-        int computerNumber = 439;
+        int equipmentSerialNumber = 439;
 
-        if (dbSerialNumber == computerNumber) {
+        if (dbSerialNumber == equipmentSerialNumber) {
             System.out.println("[№" + dbSerialNumber + "]: компьютер на 3-м этаже в кабинете 2");
         } else {
             System.out.println("Нет полного совпадения");
             System.out.println("База данных: [№" + dbSerialNumber + "]");
 
             int dbSerialOnes = dbSerialNumber % 10;
-            int dbSerialDozens = dbSerialNumber / 10 % 10;
+            int dbSerialTens = dbSerialNumber / 10 % 10;
             int dbSerialHundreds = dbSerialNumber / 100;
 
-            int computerNumberOnes = computerNumber % 10;
-            int computerNumberDozens = computerNumber / 10 % 10;
-            int computerNumberHundreds = computerNumber / 100;
+            int equipmentSerialNumberOnes = equipmentSerialNumber % 10;
+            int equipmentSerialNumberDozens = equipmentSerialNumber / 10 % 10;
+            int equipmentSerialNumberHundreds = equipmentSerialNumber / 100;
 
-            System.out.printf("Фактический: [%s%s%s]%n", 
-                    dbSerialHundreds == computerNumberHundreds ? dbSerialHundreds : "_",
-                    dbSerialDozens == computerNumberDozens ? dbSerialDozens : "_",
-                    dbSerialOnes == computerNumberOnes ? dbSerialOnes : "_");
+            System.out.printf("Фактический: [№%s%s%s]%n", 
+                    dbSerialHundreds == equipmentSerialNumberHundreds ? dbSerialHundreds : "_",
+                    dbSerialTens == equipmentSerialNumberDozens ? dbSerialTens : "_",
+                    dbSerialOnes == equipmentSerialNumberOnes ? dbSerialOnes : "_");
         }
 
         System.out.println("\n6. Подсчёт начисленных банком %");
         System.out.println("\nРешение первым способом - с использованием float без округления");
         float deposit = 321_123.79f;
-        float firstInterestRate = 0.05f;
-        float secondInterestRate = 0.07f;
-        float thirdInterestRate = 0.1f;
-        float currentInterestRate = firstInterestRate;
+        float interestRate = 0.05f;
 
         if (deposit >= 100_000 && deposit <= 300_000) {
-            currentInterestRate = secondInterestRate;
+            interestRate = 0.07f;
         } else if (deposit > 300_000) {
-            currentInterestRate = thirdInterestRate;
+            interestRate = 0.1f;
         }
 
-        float accuredInterest = deposit * currentInterestRate;
+        float accuredInterest = deposit * interestRate;
         float totalAmount = deposit + accuredInterest;
 
         System.out.printf("Сумма вклада: %f руб.%n", deposit);
@@ -138,19 +135,16 @@ public class IfElseStatementTheme {
 
         System.out.println("\nРешение вторым способом - с использованием BigDecimal с округлением");
         var depositBd = new BigDecimal("321123.79");
-        var firstInterestRateBd = new BigDecimal("0.05");
-        var secondInterestRateBd = new BigDecimal("0.07");
-        var thirdInterestRateBd = new BigDecimal("0.1");
-        var currentInterestRateBd = firstInterestRateBd;
+        var interestRateBd = new BigDecimal("0.05");
 
         if (depositBd.compareTo(BigDecimal.valueOf(100_000)) >= 0 && 
                 depositBd.compareTo(BigDecimal.valueOf(300_000)) <= 0) {
-            currentInterestRateBd = secondInterestRateBd;
+            interestRateBd = new BigDecimal("0.07");
         } else if (depositBd.compareTo(BigDecimal.valueOf(300_000)) > 0) {
-            currentInterestRateBd = thirdInterestRateBd;
+            interestRateBd = new BigDecimal("0.1");
         }
 
-        var accuredInterestBd = depositBd.multiply(currentInterestRateBd).setScale(2, RoundingMode.HALF_UP);
+        var accuredInterestBd = depositBd.multiply(interestRateBd).setScale(2, RoundingMode.HALF_UP);
         var totalAmountBd = depositBd.add(accuredInterestBd).setScale(2, RoundingMode.HALF_UP);
 
         System.out.printf("Сумма вклада: %.2f руб.%n", depositBd);
@@ -196,15 +190,13 @@ public class IfElseStatementTheme {
         var monthlySales = new BigDecimal("13025.233");
         var monthlyRent = new BigDecimal("5123.018");
         var monthlyProductionCost = new BigDecimal("9001.729");
-        var months = new BigDecimal("12");
-        var annualSales = monthlySales.multiply(months);
-        var annualRent = monthlyRent.multiply(months);
-        var annualProductionCost = monthlyProductionCost.multiply(months);
-        var annualProfit = annualSales.subtract(annualRent)
-                .subtract(annualProductionCost)
+        var months = BigDecimal.valueOf(12);
+
+        var annualProfit = (monthlySales.subtract(monthlyRent)
+                .subtract(monthlyProductionCost)).multiply(months)
                 .setScale(2, RoundingMode.HALF_UP);
 
-        if (annualProfit.compareTo(BigDecimal.valueOf(0)) <= 0) {
+        if (annualProfit.compareTo(BigDecimal.ZERO) <= 0) {
             System.out.printf("Прибыль за год: %.2f%n", annualProfit);
         } else {
             System.out.printf("Прибыль за год: %+.2f%n", annualProfit);
