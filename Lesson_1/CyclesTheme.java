@@ -14,14 +14,13 @@ public class CyclesTheme {
         System.out.println("\nВторой вариант решения");
         System.out.printf("%7s%12s%14s%n", "DECIMAL", "CHARACTER", "DESCRIPTION");
 
-        for (int code = 33; code < 123; code++) {
-            boolean isOddBeforeDigits = (code % 2 != 0 && code < 48);
-            boolean isEvenLowercase =  (code % 2 == 0 && code > 96 && code < 123);
+        for (int code = 33; code <= 122; code++) {
+            boolean isOddBeforeDigits = (code % 2 != 0 && code <= 47);
+            boolean isEvenLowercase = (code % 2 == 0 && code >= 97 && code <= 122);
 
-            if (isEvenLowercase || isEvenLowercase) {
+            if (isOddBeforeDigits || isEvenLowercase) {
                 System.out.printf("%4d%11c%12c%-20s%n", code, code, ' ', Character.getName(code));
             }
-            
         }
 
         System.out.println("\n2. Вывод геометрических фигур");
@@ -68,5 +67,54 @@ public class CyclesTheme {
         }
 
         System.out.println("\n4. Вывод чисел в несколько строк");
+        int start = 1;
+        int end = 24;
+        int count = 0;
+
+        for (int i = start; i < end; i++) {
+            if (i % 2 != 0) {
+                System.out.printf("%3d", i);
+                count++;
+                if (count == 5) {
+                    System.out.println();
+                    count = 0;
+                }
+            }
+        }
+        if (count > 0) {
+            while (count < 5) {
+                System.out.printf("%3d", 0);
+                count++;
+            }
+            System.out.println();
+        }
+
+        System.out.println("\n5. Вывод чисел между min и max");
+        int firstNumber = 10;
+        int secondNumber = 5;
+        int thirdNumber = -1;
+        int maxNumber = firstNumber;
+
+        if (secondNumber > maxNumber) {
+            maxNumber = secondNumber;
+        }
+        if (thirdNumber > maxNumber) {
+            maxNumber = thirdNumber;
+        }
+
+        int minNumber = firstNumber;
+
+        if (secondNumber < minNumber) {
+            minNumber = secondNumber;
+        }
+        if (thirdNumber < minNumber) {
+            minNumber = thirdNumber;
+        }
+
+        System.out.print("Числа в интервале (" + minNumber + ", " + maxNumber + ") в порядке убывания: ");
+        for (int i = maxNumber - 1; i > minNumber; i-- ) {
+            System.out.print(i + " ");
+        }
+        System.out.println();
     }
 }
