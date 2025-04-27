@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class CyclesTheme {
     public static void main(String[] args) {
         System.out.println("1. Вывод ASCII-символов");
@@ -112,9 +114,93 @@ public class CyclesTheme {
         }
 
         System.out.print("Числа в интервале (" + minNumber + ", " + maxNumber + ") в порядке убывания: ");
-        for (int i = maxNumber - 1; i > minNumber; i-- ) {
+        for (int i = maxNumber - 1; i > minNumber; i--) {
             System.out.print(i + " ");
         }
         System.out.println();
+
+        System.out.println("\n6. Разные операции над числом");
+        int initialNumber = 2_234_321;
+        int temp = initialNumber;
+        int reversedNumber = 0;
+        int countOfTwos = 0;
+
+        while (temp != 0) {
+            int digit = temp % 10;
+            if (digit == 2) {
+                countOfTwos++;
+            }
+            reversedNumber = reversedNumber * 10 + digit;
+            temp /= 10;
+        }
+
+        boolean isPolindrome = initialNumber == reversedNumber;
+        String evenOrOdd = (countOfTwos % 2 == 0) ? "четным" : "нечетным";
+
+        System.out.println(reversedNumber + " - " + (isPolindrome ? "" : "не ") + "полиндром с " + 
+                evenOrOdd + " (" + countOfTwos + ") количеством двоек");
+
+        System.out.println("\n7. Проверка счастливого числа");
+        initialNumber = 101_002;
+        int firstHalf = initialNumber / 1000;
+        int secondHalf = initialNumber % 1000;
+        int firstHalfSum = 0;
+        temp = firstHalf;
+
+        while (temp > 0) {
+            firstHalfSum += temp % 10;
+            temp /= 10;
+        }
+
+        int secondHalfSum = 0;
+        temp = secondHalf;
+
+        while (temp > 0) {
+            secondHalfSum += temp % 10;
+            temp /= 10;
+        }
+
+        boolean isLuckyNumber = firstHalfSum == secondHalfSum;
+
+        System.out.printf("%d - %s число%n", initialNumber, isLuckyNumber ? "счастливое" : "несчастливое");
+        System.out.printf("Сумма цифр %03d = %d%n", firstHalf, firstHalfSum);
+        System.out.printf("Сумма цифр %03d = %d%n", secondHalf, secondHalfSum);
+
+        System.out.println("\n8. Генератор пароля");
+        int passwordLenght = 8;
+        boolean hasSymbol = false;
+        boolean hasDigit = false;
+        boolean hasSmallLetter = false;
+        boolean hasBigLetter = false;
+        String password = "";
+        Random rnd = new Random();
+
+        for (int i = 1; i <= passwordLenght; i++) {
+            char ch = (char) rnd.nextInt(33, 127);
+            password += ch;
+
+            if (!Character.isLetterOrDigit(ch)) {
+                hasSymbol = true;
+            } else if (Character.isDigit(ch)) {
+                hasDigit = true;
+            } else if (Character.isLowerCase(ch)) {
+                hasSmallLetter = true;
+            } else if (Character.isUpperCase(ch)) {
+                hasBigLetter = true;
+            }
+        }
+
+        System.out.println("Пароль: " + password);
+        
+        String passwordStrength = "";
+
+        if (passwordLenght >= 8 && hasSymbol && hasDigit && hasSmallLetter && hasBigLetter) {
+            passwordStrength = "Надежный";
+        } else if (passwordLenght >= 8 && (hasBigLetter || hasDigit)) {
+            passwordStrength = "Средний";
+        } else {
+            passwordStrength = "Слабый";
+        }
+        System.out.println("Надежность: " + passwordStrength);
     }
 }
