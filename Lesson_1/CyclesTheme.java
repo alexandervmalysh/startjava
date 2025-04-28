@@ -6,7 +6,10 @@ public class CyclesTheme {
         System.out.printf("%7s%12s%14s%n", "DECIMAL", "CHARACTER", "DESCRIPTION");
 
         for (int code = 33; code <= 122; code++) {
-            if ((code % 2 != 0 && code <= 47) || (code % 2 == 0 && code >= 97 && code <= 122)) {
+            boolean isSpecialCode = (code % 2 != 0 && code <= 47) || 
+                    (code % 2 == 0 && code >= 97 && code <= 122);
+
+            if (isSpecialCode) {
                 System.out.printf("%4d%11c%12c%-20s%n", code, code, ' ', Character.getName(code));
             }
         }
