@@ -3,24 +3,10 @@ import java.util.Random;
 public class CyclesTheme {
     public static void main(String[] args) {
         System.out.println("1. Вывод ASCII-символов");
-        System.out.println("\nПервый вариант решения");
-        System.out.printf("%7s%12s%14s%n", "DECIMAL", "CHARACTER", "DESCRIPTION");
-
-        for (int i = 33; i < 123; i++) {
-            if ((i % 2 != 0 && i < 48) || 
-                    (i % 2 == 0 && i > 96 && i < 123)) {
-                System.out.printf("%4d%11c%12c%-20s%n", i, i, ' ', Character.getName(i));
-            }
-        }
-
-        System.out.println("\nВторой вариант решения");
         System.out.printf("%7s%12s%14s%n", "DECIMAL", "CHARACTER", "DESCRIPTION");
 
         for (int code = 33; code <= 122; code++) {
-            boolean isOddBeforeDigits = (code % 2 != 0 && code <= 47);
-            boolean isEvenLowercase = (code % 2 == 0 && code >= 97 && code <= 122);
-
-            if (isOddBeforeDigits || isEvenLowercase) {
+            if ((code % 2 != 0 && code <= 47) || (code % 2 == 0 && code >= 97 && code <= 122)) {
                 System.out.printf("%4d%11c%12c%-20s%n", code, code, ' ', Character.getName(code));
             }
         }
@@ -117,27 +103,25 @@ public class CyclesTheme {
         for (int i = maxNumber - 1; i > minNumber; i--) {
             System.out.print(i + " ");
         }
-        System.out.println();
 
-        System.out.println("\n6. Разные операции над числом");
+        System.out.println("\n\n6. Разные операции над числом");
         int initialNumber = 2_234_321;
-        int temp = initialNumber;
+        int currNumber = initialNumber;
         int reversedNumber = 0;
         int countOfTwos = 0;
 
-        while (temp != 0) {
-            int digit = temp % 10;
-            if (digit == 2) {
+        while (currNumber > 0) {
+            if (currNumber % 10 == 2) {
                 countOfTwos++;
             }
-            reversedNumber = reversedNumber * 10 + digit;
-            temp /= 10;
+            reversedNumber = reversedNumber * 10 + (currNumber % 10);
+            currNumber /= 10;
         }
 
         boolean isPolindrome = initialNumber == reversedNumber;
         String evenOrOdd = (countOfTwos % 2 == 0) ? "четным" : "нечетным";
 
-        System.out.println(reversedNumber + " - " + (isPolindrome ? "" : "не ") + "полиндром с " + 
+        System.out.println(reversedNumber + " - " + (isPolindrome ? "" : "не ") + "палиндром с " + 
                 evenOrOdd + " (" + countOfTwos + ") количеством двоек");
 
         System.out.println("\n7. Проверка счастливого числа");
@@ -145,19 +129,19 @@ public class CyclesTheme {
         int firstHalf = initialNumber / 1000;
         int secondHalf = initialNumber % 1000;
         int firstHalfSum = 0;
-        temp = firstHalf;
+        currNumber = firstHalf;
 
-        while (temp > 0) {
-            firstHalfSum += temp % 10;
-            temp /= 10;
+        while (currNumber > 0) {
+            firstHalfSum += currNumber % 10;
+            currNumber /= 10;
         }
 
         int secondHalfSum = 0;
-        temp = secondHalf;
+        currNumber = secondHalf;
 
-        while (temp > 0) {
-            secondHalfSum += temp % 10;
-            temp /= 10;
+        while (currNumber > 0) {
+            secondHalfSum += currNumber % 10;
+            currNumber /= 10;
         }
 
         boolean isLuckyNumber = firstHalfSum == secondHalfSum;
@@ -168,6 +152,7 @@ public class CyclesTheme {
 
         System.out.println("\n8. Генератор пароля");
         int passwordLenght = 8;
+        boolean hasLongPassword = passwordLenght >= 8;
         boolean hasSymbol = false;
         boolean hasDigit = false;
         boolean hasSmallLetter = false;
@@ -192,15 +177,13 @@ public class CyclesTheme {
 
         System.out.println("Пароль: " + password);
         
-        String passwordStrength = "";
+        String passwordStrength = "Слабый";
 
-        if (passwordLenght >= 8 && hasSymbol && hasDigit && hasSmallLetter && hasBigLetter) {
+        if (hasLongPassword && hasSymbol && hasDigit && hasSmallLetter && hasBigLetter) {
             passwordStrength = "Надежный";
-        } else if (passwordLenght >= 8 && (hasBigLetter || hasDigit)) {
+        } else if (hasLongPassword && (hasBigLetter || hasDigit)) {
             passwordStrength = "Средний";
-        } else {
-            passwordStrength = "Слабый";
-        }
+        } 
         System.out.println("Надежность: " + passwordStrength);
     }
 }
