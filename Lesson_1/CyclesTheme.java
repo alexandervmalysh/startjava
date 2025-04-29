@@ -114,10 +114,11 @@ public class CyclesTheme {
         int countOfTwos = 0;
 
         while (currNumber > 0) {
-            if (currNumber % 10 == 2) {
+            int digit = currNumber % 10;
+            if (digit == 2) {
                 countOfTwos++;
             }
-            reversedNumber = reversedNumber * 10 + (currNumber % 10);
+            reversedNumber = reversedNumber * 10 + digit;
             currNumber /= 10;
         }
 
@@ -132,26 +133,21 @@ public class CyclesTheme {
         int firstHalf = initialNumber / 1000;
         int secondHalf = initialNumber % 1000;
         int firstHalfSum = 0;
-        currNumber = firstHalf;
-
-        while (currNumber > 0) {
-            firstHalfSum += currNumber % 10;
-            currNumber /= 10;
-        }
-
         int secondHalfSum = 0;
-        currNumber = secondHalf;
 
-        while (currNumber > 0) {
-            secondHalfSum += currNumber % 10;
-            currNumber /= 10;
+        for (int i = 1; i <= 3; i++) {
+            firstHalfSum += firstHalf % 10;
+            firstHalf /= 10;
+
+            secondHalfSum += secondHalf % 10;
+            secondHalf /= 10;
         }
 
         boolean isLuckyNumber = firstHalfSum == secondHalfSum;
 
         System.out.printf("%d - %s число%n", initialNumber, isLuckyNumber ? "счастливое" : "несчастливое");
-        System.out.printf("Сумма цифр %03d = %d%n", firstHalf, firstHalfSum);
-        System.out.printf("Сумма цифр %03d = %d%n", secondHalf, secondHalfSum);
+        System.out.printf("Сумма цифр %03d = %d%n", initialNumber / 1000, firstHalfSum);
+        System.out.printf("Сумма цифр %03d = %d%n", initialNumber % 1000, secondHalfSum);
 
         System.out.println("\n8. Генератор пароля");
         int passwordLenght = 8;
