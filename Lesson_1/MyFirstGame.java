@@ -16,7 +16,7 @@ public class MyFirstGame {
                 System.out.println(playerGuess + " больше того, что загадал компьютер");
                 endInteraval = playerGuess - 1;
             } else {
-                System.out.println(playerGuess  + " меньше того, что загадал компьютер");
+                System.out.println(playerGuess + " меньше того, что загадал компьютер");
                 startInterval = playerGuess + 1;
             }
             playerGuess = (startInterval + endInteraval) / 2;
