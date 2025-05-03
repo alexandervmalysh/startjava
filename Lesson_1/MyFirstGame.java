@@ -8,11 +8,8 @@ public class MyFirstGame {
         int secretNumber = rnd.nextInt(startInterval, endInteraval);
         int playerGuess = (startInterval + endInteraval) / 2;
 
-        while (true) {
-            if (playerGuess == secretNumber) {
-                System.out.println("Вы победили!");
-                break;
-            } else if (playerGuess > secretNumber) {
+        while (playerGuess != secretNumber) {
+            if (playerGuess > secretNumber) {
                 System.out.println(playerGuess + " больше того, что загадал компьютер");
                 endInteraval = playerGuess - 1;
             } else {
@@ -21,5 +18,6 @@ public class MyFirstGame {
             }
             playerGuess = (startInterval + endInteraval) / 2;
         }
+        System.out.println("Вы победили!");
     }
 }
