@@ -16,6 +16,17 @@ public class Calculator {
     }
 
     public void calculate() {
+        if (operation != '+' && operation != '-' && operation != '*' &&
+                operation != '/' && operation != '^' && operation != '%') {
+            System.out.println("Ошибка: операция " + operation + " не поддерживается");
+            return;
+        }
+
+        if ((operation == '/' || operation == '%') && secondNumber == 0) {
+            System.out.println("Ошибка: деление на ноль запрещено");
+            return;
+        }
+
         double result = 0.0;
 
         switch (operation) {
@@ -29,31 +40,23 @@ public class Calculator {
                 result = firstNumber * secondNumber;
                 break;
             case '/':
-                if (secondNumber == 0) {
-                    System.out.println("Ошибка: деление на ноль запрещено");
-                    return;
-                } else {
-                    result = firstNumber / secondNumber;
-                }
+                result = firstNumber / secondNumber;
                 break;
             case '^':
                 result = 1.0;
+                int absSecondNumber = Math.abs(secondNumber);
+                for (int i = 0; i < absSecondNumber; i++) {
+                    result *= firstNumber;
+                }
                 if (secondNumber < 0) {
-                    for (int i = 0; i < -secondNumber; i++) {
-                        result *= firstNumber;
-                    }
                     result = 1 / result;
-                } else {
-                    for (int i = 0; i < secondNumber; i++) {
-                        result *= firstNumber;
-                    }
                 }
                 break;
             case '%':
                 result = firstNumber % secondNumber;
                 break;
             default:
-                System.out.println("Ошибка: операция '&' не поддерживается");
+                System.out.println();
                 return;
         }
         System.out.println("Результат вычисления: " + result);

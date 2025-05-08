@@ -2,21 +2,21 @@ import java.util.Scanner;
 
 public class CalculatorTest {
     public static void main(String[] args) {
-        Calculator myCalculator = new Calculator();
+        Calculator calculator = new Calculator();
         Scanner scanner = new Scanner(System.in);
         String answer = "yes";
 
         while (answer.equalsIgnoreCase("yes")) {
             System.out.print("Введите первое число: ");
-            myCalculator.setFirstNumber(scanner.nextInt());
+            calculator.setFirstNumber(scanner.nextInt());
 
             System.out.print("Введите знак операции (+, -, *, /, ^, %): ");
-            myCalculator.setOperation(scanner.next().charAt(0));
+            calculator.setOperation(scanner.next().charAt(0));
 
             System.out.print("Введите второе число: ");
-            myCalculator.setSecondNumber(scanner.nextInt());
+            calculator.setSecondNumber(scanner.nextInt());
 
-            myCalculator.calculate();
+            calculator.calculate();
             scanner.nextLine();
 
             do {
