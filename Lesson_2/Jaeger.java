@@ -14,7 +14,7 @@ public class Jaeger {
     }
 
     public Jaeger(String modelName, String mark, String origin, String operationSystem, String energyCore,
-                  float height, float weight, int speed, int strength, int armor) {
+            float height, float weight, int speed, int strength, int armor) {
         this.modelName = modelName;
         this.mark = mark;
         this.origin = origin;
