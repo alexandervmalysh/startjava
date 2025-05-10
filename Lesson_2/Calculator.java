@@ -16,12 +16,6 @@ public class Calculator {
     }
 
     public void calculate() {
-        if (operation != '+' && operation != '-' && operation != '*' &&
-                operation != '/' && operation != '^' && operation != '%') {
-            System.out.println("Ошибка: операция " + operation + " не поддерживается");
-            return;
-        }
-
         if ((operation == '/' || operation == '%') && secondNumber == 0) {
             System.out.println("Ошибка: деление на ноль запрещено");
             return;
@@ -48,15 +42,13 @@ public class Calculator {
                 for (int i = 0; i < absSecondNumber; i++) {
                     result *= firstNumber;
                 }
-                if (secondNumber < 0) {
-                    result = 1 / result;
-                }
+                result = secondNumber < 0 ? 1 / result : result;
                 break;
             case '%':
                 result = firstNumber % secondNumber;
                 break;
             default:
-                System.out.println();
+                System.out.println("Ошибка: операция " + operation + " не поддерживается");
                 return;
         }
         System.out.println("Результат вычисления: " + result);
