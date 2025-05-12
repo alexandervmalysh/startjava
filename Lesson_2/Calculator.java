@@ -37,12 +37,7 @@ public class Calculator {
                 result = firstNumber / secondNumber;
                 break;
             case '^':
-                result = 1.0;
-                int absSecondNumber = Math.abs(secondNumber);
-                for (int i = 0; i < absSecondNumber; i++) {
-                    result *= firstNumber;
-                }
-                result = secondNumber < 0 ? 1 / result : result;
+                result = power(firstNumber, secondNumber);
                 break;
             case '%':
                 result = firstNumber % secondNumber;
@@ -52,5 +47,14 @@ public class Calculator {
                 return;
         }
         System.out.println("Результат вычисления: " + result);
+    }
+
+    private double power(int firstNumber, int secondNumber) {
+        double result = 1.0;
+        int absSecondNumber = Math.abs(secondNumber);
+        for (int i = 0; i < absSecondNumber; i++) {
+            result *= firstNumber;
+        }
+        return secondNumber < 0 ? 1 / result : result;
     }
 }
