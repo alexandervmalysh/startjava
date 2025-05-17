@@ -1,10 +1,10 @@
 public class Main {
     public static void main(String[] args) {
-        runNonBooleanMethods();
-        runBooleanMethods();
+        execNonBooleanMethods();
+        execBooleanMethods();
     }
 
-    public static void runNonBooleanMethods() {
+    public static void execNonBooleanMethods() {
         System.out.println("1. Не boolean-методы\n");
         NonBooleanMethods nonBm = new NonBooleanMethods();
         nonBm.findLongestWord();
@@ -16,14 +16,14 @@ public class Main {
         nonBm.restoreData();
         nonBm.pauseFileDownload();
         nonBm.restoreToFactoryDefaults();
-        nonBm.writeToFlashDrive();
+        nonBm.writeToStorage();
         nonBm.convertTemperature();
         nonBm.enterMathExpression();
         nonBm.determineRaceWinner();
         nonBm.findBooksByAuthor();
     }
 
-    public static void runBooleanMethods() {
+    public static void execBooleanMethods() {
         System.out.println("\n2. boolean-методы\n");
         BooleanMethods bm = new BooleanMethods();
         System.out.println(bm.shouldTerminateProgram());
