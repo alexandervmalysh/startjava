@@ -21,8 +21,8 @@ public class CalculatorTest {
 
             do {
                 System.out.print("Хотите продолжить вычисления? [yes/no]: ");
-                answer = scanner.nextLine();
-            } while (!answer.equalsIgnoreCase("no") && !answer.equalsIgnoreCase("yes"));
+                answer = scanner.nextLine().toLowerCase();
+            } while (!answer.equals("no") && !answer.equals("yes"));
         }
     }
 }
