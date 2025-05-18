@@ -11,16 +11,16 @@ public class GuessNumber {
     }
 
     public void start() {
-        Scanner scanner = new Scanner(System.in);
         generateSecretNumber();
-        startGameplay(scanner);
+        startGameplay();
     }
 
     private void generateSecretNumber() {
         secretNumber = (int) (Math.random() * 100 + 1);
     }
 
-    private void startGameplay(Scanner scanner) {
+    private void startGameplay() {
+        Scanner scanner = new Scanner(System.in);
         Player currentPlayer = player1;
 
         while (true) {
@@ -32,17 +32,14 @@ public class GuessNumber {
                         "! Вы угадали число и победили!");
                 break;
             }
-            giveHint(playerGuess);
+
+            if (playerGuess < secretNumber) {
+                System.out.println(playerGuess + " меньше того, что загадал компьютер");
+            } else {
+                System.out.println(playerGuess + " больше того, что загадал компьютер");
+            }
             currentPlayer = (currentPlayer == player1) ? player2 : player1;
         }
         scanner.nextLine();
-    }
-
-    private void giveHint(int guess) {
-        if (guess < secretNumber) {
-            System.out.println(guess + " меньше того, что загадал компьютер");
-        } else if (guess > secretNumber) {
-            System.out.println(guess + " больше того, что загадал компьютер");
-        }
     }
 }
