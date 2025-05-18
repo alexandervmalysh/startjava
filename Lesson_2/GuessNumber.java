@@ -27,19 +27,27 @@ public class GuessNumber {
             System.out.print(currentPlayer.getName() + ", введите число для угадывания: ");
             int playerGuess = scanner.nextInt();
 
-            if (playerGuess == secretNumber) {
-                System.out.println("Поздравляем, " + currentPlayer.getName() +
-                        "! Вы угадали число и победили!");
+            if (checkGuess(currentPlayer, playerGuess)) {
                 break;
             }
 
-            if (playerGuess < secretNumber) {
-                System.out.println(playerGuess + " меньше того, что загадал компьютер");
-            } else {
-                System.out.println(playerGuess + " больше того, что загадал компьютер");
-            }
             currentPlayer = (currentPlayer == player1) ? player2 : player1;
         }
         scanner.nextLine();
+    }
+
+    private boolean checkGuess(Player player, int guess) {
+        if (guess == secretNumber) {
+            System.out.println("Поздравляем, " + player.getName() +
+                    "! Вы угадали число и победили!");
+            return true;
+        }
+
+        if (guess < secretNumber) {
+            System.out.println(guess + " меньше того, что загадал компьютер");
+        } else {
+            System.out.println(guess + " больше того, что загадал компьютер");
+        }
+        return false;
     }
 }
