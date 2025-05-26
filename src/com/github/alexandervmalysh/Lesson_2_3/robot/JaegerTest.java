@@ -1,3 +1,5 @@
+package com.github.alexandervmalysh.lesson_2_3.robot;
+
 public class JaegerTest {
     public static void main(String[] args) {
         Jaeger jaegerStriker = new Jaeger();

@@ -1,3 +1,5 @@
+package com.github.alexandervmalysh.lesson_2_3.method.naming;
+
 public class BooleanMethods {
     public boolean shouldTerminateProgram() {
         System.out.println(Methods.getName() + " -> программа выполняется далее или завершается?");

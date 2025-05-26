@@ -1,3 +1,5 @@
+package com.github.alexandervmalysh.lesson_2_3.guess;
+
 import java.util.Scanner;
 
 public class GuessNumberTest {

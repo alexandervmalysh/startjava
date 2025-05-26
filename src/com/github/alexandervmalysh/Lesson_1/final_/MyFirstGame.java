@@ -1,3 +1,5 @@
+package com.github.alexandervmalysh.lesson_1.final_;
+
 import java.util.Random;
 
 public class MyFirstGame {

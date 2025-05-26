@@ -1,3 +1,5 @@
+package com.github.alexandervmalysh.lesson_2_3.person;
+
 public class Person {
     private String gender = "male";
     private String name = "Саша";

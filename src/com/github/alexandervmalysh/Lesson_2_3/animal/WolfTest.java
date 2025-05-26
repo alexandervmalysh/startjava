@@ -1,3 +1,5 @@
+package com.github.alexandervmalysh.lesson_2_3.animal;
+
 public class WolfTest {
     public static void main(String[] args) {
         Wolf myWolf = new Wolf();

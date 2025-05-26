@@ -1,3 +1,5 @@
+package com.github.alexandervmalysh.lesson_1.base;
+
 import java.util.Random;
 
 public class CyclesTheme {
