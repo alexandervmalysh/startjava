@@ -1,4 +1,4 @@
-package com.github.alexandervmalysh.lesson_2_3.method.naming;
+package com.github.alexandervmalysh.lesson_2_3_4.method.naming;
 
 public class Main {
     public static void main(String[] args) {

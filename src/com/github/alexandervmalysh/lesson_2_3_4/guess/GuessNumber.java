@@ -1,4 +1,4 @@
-package com.github.alexandervmalysh.lesson_2_3.guess;
+package com.github.alexandervmalysh.lesson_2_3_4.guess;
 
 import java.util.Scanner;
 
