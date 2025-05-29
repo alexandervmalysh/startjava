@@ -2,8 +2,10 @@
 *.xml
 *.jar
 *.txt
+*.iml
 
 out/
+.idea
 
 options
 optionsj
