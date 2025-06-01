@@ -4,38 +4,28 @@ import java.util.Arrays;
 
 public class TransactionReverser {
     public static void main(String[] args) {
-        int[] original1 = {};
-        int[] reversed1 = reverse(original1);
-        printTransaction(original1, reversed1);
+        int[] original;
+        int[] reversed;
 
-        int[] original2 = null;
-        int[] reversed2 = reverse(original2);
-        printTransaction(original2, reversed2);
+        original = new int[]{};
+        reversed = reverse(original);
+        printTransactions(original, reversed);
 
-        int[] original3 = {5};
-        int[] reversed3 = reverse(original3);
-        printTransaction(original3, reversed3);
+        original = null;
+        reversed = reverse(original);
+        printTransactions(original, reversed);
 
-        int[] original4 = {6, 8, 9, 1};
-        int[] reversed4 = reverse(original4);
-        printTransaction(original4, reversed4);
+        original = new int[]{5};
+        reversed = reverse(original);
+        printTransactions(original, reversed);
 
-        int[] original5 = {13, 8, 5, 3, 2, 1, 1};
-        int[] reversed5 = reverse(original5);
-        printTransaction(original5, reversed5);
-    }
+        original = new int[]{6, 8, 9, 1};
+        reversed = reverse(original);
+        printTransactions(original, reversed);
 
-    private static void printTransaction(int[] original, int[] reversed) {
-        if (original == null) {
-            System.out.println("Ошибка: массив равен null\n");
-            return;
-        }
-        if (original.length == 0) {
-            System.out.println("Ошибка: пустой массив\n");
-            return;
-        }
-        System.out.println("Исходные транзакции: " + Arrays.toString(original));
-        System.out.println(" В обратном порядке: " + Arrays.toString(reversed) + '\n');
+        original = new int[]{13, 8, 5, 3, 2, 1, 1};
+        reversed = reverse(original);
+        printTransactions(original, reversed);
     }
 
     private static int[] reverse(int[] original) {
@@ -43,10 +33,27 @@ public class TransactionReverser {
             return null;
         }
 
+        int len = original.length - 1;
         int[] reversed = new int[original.length];
-        for (int i = 0; i < original.length; i++) {
-            reversed[original.length - 1 - i] = original[i];
+
+        for (int element : original) {
+            reversed[len--] = element;
         }
         return reversed;
+    }
+
+    private static void printTransactions(int[] original, int[] reversed) {
+        if (original == null) {
+            System.out.println("Ошибка: массив равен null\n");
+            return;
+        }
+
+        int len = original.length;
+        if (len == 0) {
+            System.out.println("Ошибка: пустой массив\n");
+            return;
+        }
+        System.out.println("Исходные транзакции: " + Arrays.toString(original));
+        System.out.println(" В обратном порядке: " + Arrays.toString(reversed) + '\n');
     }
 }
