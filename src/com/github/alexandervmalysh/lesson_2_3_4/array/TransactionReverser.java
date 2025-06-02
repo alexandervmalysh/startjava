@@ -4,11 +4,8 @@ import java.util.Arrays;
 
 public class TransactionReverser {
     public static void main(String[] args) {
-        int[] original;
-        int[] reversed;
-
-        original = new int[]{};
-        reversed = reverse(original);
+        int[] original = new int[]{};
+        int[] reversed = reverse(original);
         printTransactions(original, reversed);
 
         original = null;
