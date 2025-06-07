@@ -56,11 +56,11 @@ public class ArrayThresholdFilter {
         }
 
         System.out.println("Исходный массив: ");
-        printArray(original, 8);
+        printArray(original);
 
         System.out.printf("Значение из ячейки по индексу %d: %.3f%n", index, modified[index]);
         System.out.println("Измененный массив:");
-        printArray(modified, 7);
+        printArray(modified);
 
         int zeroedCount = 0;
         for (float numbers : original) {
@@ -72,11 +72,11 @@ public class ArrayThresholdFilter {
         System.out.printf("Количество обнуленных ячеек: %d%n%n", zeroedCount);
     }
 
-    private static void printArray(float[] array, int numbersPerLine) {
+    private static void printArray(float[] array) {
         for (int i = 0; i < array.length; i++) {
             System.out.printf("%.3f", array[i]);
 
-            if ((i + 1) % numbersPerLine == 0 || i == array.length - 1) {
+            if ((i + 1) % 8 == 0 || i == array.length - 1) {
                 System.out.println();
             } else {
                 System.out.print(" ");
