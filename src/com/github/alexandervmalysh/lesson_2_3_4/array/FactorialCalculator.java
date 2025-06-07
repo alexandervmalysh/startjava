@@ -3,38 +3,38 @@ package com.github.alexandervmalysh.lesson_2_3_4.array;
 public class FactorialCalculator {
     public static void main(String[] args) {
         int[] numbers = {};
-        int[] factorials = calcFactorials(numbers);
-        printFactorials(numbers, factorials);
+        long[] factorials = calcFactorials(numbers);
+        printFactorialExpr(numbers, factorials);
 
         numbers = null;
         factorials = calcFactorials(numbers);
-        printFactorials(numbers, factorials);
+        printFactorialExpr(numbers, factorials);
 
         numbers = new int[]{8, 0, 9};
         factorials = calcFactorials(numbers);
-        printFactorials(numbers, factorials);
+        printFactorialExpr(numbers, factorials);
 
         numbers = new int[]{-3, 1, 7, 13};
         factorials = calcFactorials(numbers);
-        printFactorials(numbers, factorials);
+        printFactorialExpr(numbers, factorials);
 
         numbers = new int[]{-22, -0};
         factorials = calcFactorials(numbers);
-        printFactorials(numbers, factorials);
+        printFactorialExpr(numbers, factorials);
     }
 
-    private static int[] calcFactorials(int... numbers) {
+    private static long[] calcFactorials(int... numbers) {
         if (numbers == null) {
             return null;
         }
 
-        int[] factorials = new int[numbers.length];
+        long[] factorials = new long[numbers.length];
 
         for (int i = 0; i < numbers.length; i++) {
             if (numbers[i] < 0) continue;
 
-            int factorialValue = 1;
-            for (int j = 1; j < numbers[i]; j++) {
+            long factorialValue = 1;
+            for (int j = 1; j <= numbers[i]; j++) {
                 factorialValue *= j;
             }
             factorials[i] = factorialValue;
@@ -42,7 +42,7 @@ public class FactorialCalculator {
         return factorials;
     }
 
-    private static void printFactorials(int[] numbers, int[] factorials) {
+    private static void printFactorialExpr(int[] numbers, long[] factorials) {
         if (numbers == null) {
             System.out.println("Ошибка: массив равен null\n");
             return;
@@ -55,7 +55,6 @@ public class FactorialCalculator {
 
         StringBuilder expression = new StringBuilder();
         for (int i = 0; i < numbers.length; i++) {
-            expression.setLength(0);
             if (numbers[i] < 0) {
                 System.out.println("Ошибка: факториал " + numbers[i] + "! не определен");
                 continue;
@@ -70,8 +69,8 @@ public class FactorialCalculator {
                         expression.append(" * ");
                     }
                 }
-                System.out.print(expression);
-                System.out.println(" = " + factorials[i]);
+                System.out.println(expression.append(" = ").append(factorials[i]));
+                expression.setLength(0);
             }
         }
         System.out.println();
