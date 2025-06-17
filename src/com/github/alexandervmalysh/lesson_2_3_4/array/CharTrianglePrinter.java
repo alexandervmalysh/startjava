@@ -2,20 +2,20 @@ package com.github.alexandervmalysh.lesson_2_3_4.array;
 
 public class CharTrianglePrinter {
     public static void main(String[] args) {
-        StringBuilder charTriangle;
-
-        charTriangle = buildCharTriangle('0', '9', true);
-        printCharTriangle('0', '9', charTriangle);
+        StringBuilder charTriangle = buildCharTriangle('0', '9', true);
+        printCharTriangle(charTriangle);
 
         charTriangle = buildCharTriangle('/', '!', false);
-        printCharTriangle('/', '!', charTriangle);
+        printCharTriangle(charTriangle);
 
         charTriangle = buildCharTriangle('A', 'J', false);
-        printCharTriangle('A', 'J', charTriangle);
+        printCharTriangle(charTriangle);
     }
 
     private static StringBuilder buildCharTriangle(char leftBorder, char rightBorder, boolean direction) {
         if (leftBorder > rightBorder) {
+            System.out.printf("Ошибка: левая граница %d > правой %d%n%n",
+                    (int) leftBorder, (int) rightBorder);
             return null;
         }
 
@@ -36,10 +36,8 @@ public class CharTrianglePrinter {
         return charTriangle;
     }
 
-    private static void printCharTriangle(char leftBorder, char rightBorder, StringBuilder charTriangle) {
+    private static void printCharTriangle(StringBuilder charTriangle) {
         if (charTriangle == null) {
-            System.out.printf("Ошибка: левая граница %d > правой %d%n%n",
-                    (int) leftBorder, (int) rightBorder);
             return;
         }
 
