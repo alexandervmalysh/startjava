@@ -4,20 +4,11 @@ import java.util.Arrays;
 
 public class UniqueArrayFiller {
     public static void main(String[] args) {
-        int[] numbers = generateRandomArray(-30, -10, 23);
-        printSortNumbers(numbers, 23);
-
-        numbers = generateRandomArray(10, 50, 10);
-        printSortNumbers(numbers, 10);
-
-        numbers = generateRandomArray(-34, -34, 0);
-        printSortNumbers(numbers, 0);
-
-        numbers = generateRandomArray(-1, 2, -3);
-        printSortNumbers(numbers, -3);
-
-        numbers = generateRandomArray(5, -8, 2);
-        printSortNumbers(numbers, 2);
+        printNumbers(generateRandomArray(-30, -10, 23), 23);
+        printNumbers(generateRandomArray(10, 50, 10), 10);
+        printNumbers(generateRandomArray(-34, -34, 0), 0);
+        printNumbers(generateRandomArray(-1, 2, -3), -3);
+        printNumbers(generateRandomArray(5, -8, 2), 2);
     }
 
     private static int[] generateRandomArray(int leftRange, int rightRange, int numbersPerLine) {
@@ -39,26 +30,40 @@ public class UniqueArrayFiller {
             return null;
         }
 
-        int[] numbers = new int[arrayLength];
+        int[] uniqueNumbers = new int[arrayLength];
+        int currentIndex = 0;
 
-        for (int i = 0; i < numbers.length; i++) {
-            numbers[i] = (int) (Math.random() * (rightRange - leftRange + 1)) + leftRange;
+        while (currentIndex < arrayLength) {
+            int randomNum = (int) (Math.random() * (rightRange - leftRange + 1)) + leftRange;
+            boolean isUniqueNumber = true;
+
+            for (int i = 0; i < currentIndex; i++) {
+                if (uniqueNumbers[i] == randomNum) {
+                    isUniqueNumber = false;
+                    break;
+                }
+            }
+
+            if (isUniqueNumber) {
+                uniqueNumbers[currentIndex] = randomNum;
+                currentIndex++;
+            }
         }
 
-        Arrays.sort(numbers);
-        return numbers;
+        Arrays.sort(uniqueNumbers);
+        return uniqueNumbers;
     }
 
-    private static void printSortNumbers(int[] numbers, int numbersPerLine) {
-        if (numbers == null) {
+    private static void printNumbers(int[] uniqueNumbers, int numbersPerLine) {
+        if (uniqueNumbers == null) {
             return;
         }
 
-        for (int i = 0; i < numbers.length; i++) {
-            System.out.printf("%d%s", numbers[i], (i + 1) % numbersPerLine == 0 ? "\n" : " ");
+        for (int i = 0; i < uniqueNumbers.length; i++) {
+            System.out.printf("%d%s", uniqueNumbers[i], (i + 1) % numbersPerLine == 0 ? "\n" : " ");
         }
 
-        if (numbers.length % numbersPerLine != 0) {
+        if (uniqueNumbers.length % numbersPerLine != 0) {
             System.out.println();
         }
 
