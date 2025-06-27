@@ -28,34 +28,35 @@ public class TypewriterEffect {
             return null;
         }
 
-        String textWithoutPunctuation = enteredText.replaceAll("\\p{P}", "").trim();
-        String[] words = textWithoutPunctuation.split(" ");
+        String[] words = enteredText.split(" ");
         int shortestWordIndex = 0;
         int longestWordIndex = 0;
 
         for (int i = 0; i < words.length; i++) {
-            if (words[i].length() < words[shortestWordIndex].length()) {
+            String cleanWord = words[i].replaceAll("\\p{P}", "");
+            if (cleanWord.isEmpty()) continue;
+
+            if (cleanWord.length() < words[shortestWordIndex].replaceAll("\\p{P}", "").length()) {
                 shortestWordIndex = i;
             }
-            if (words[i].length() > words[longestWordIndex].length()) {
+            if (cleanWord.length() > words[longestWordIndex].replaceAll("\\p{P}", "").length()) {
                 longestWordIndex = i;
             }
         }
 
         int start = Math.min(shortestWordIndex, longestWordIndex);
         int end = Math.max(shortestWordIndex, longestWordIndex);
-        String[] originalWords = enteredText.split(" ");
 
         for (int i = start; i <= end; i++) {
-            originalWords[i] = originalWords[i].toUpperCase();
+            words[i] = words[i].toUpperCase();
         }
 
         StringBuilder outputText = new StringBuilder();
-        for (String word : originalWords) {
+        for (String word : words) {
             outputText.append(word).append(" ");
         }
 
-        return outputText.toString();
+        return outputText.toString().trim();
     }
 
     private static void type(String enteredText) throws InterruptedException {
