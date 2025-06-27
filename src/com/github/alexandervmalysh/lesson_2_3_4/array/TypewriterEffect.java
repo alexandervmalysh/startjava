@@ -28,31 +28,30 @@ public class TypewriterEffect {
             return null;
         }
 
-        String textWithoutPunctuation = enteredText.replaceAll("[\\p{Punct}\\s]+", " ").trim();
+        String textWithoutPunctuation = enteredText.replaceAll("\\p{P}", "").trim();
         String[] words = textWithoutPunctuation.split(" ");
-        int shortestWord = 0;
-        int longestWord = 0;
+        int shortestWordIndex = 0;
+        int longestWordIndex = 0;
 
         for (int i = 0; i < words.length; i++) {
-            if (words[i].length() < words[shortestWord].length()) {
-                shortestWord = i;
-            } else if (words[i].length() > words[longestWord].length()) {
-                longestWord = i;
+            if (words[i].length() < words[shortestWordIndex].length()) {
+                shortestWordIndex = i;
+            }
+            if (words[i].length() > words[longestWordIndex].length()) {
+                longestWordIndex = i;
             }
         }
 
-        if (shortestWord > longestWord) {
-            int temp = longestWord;
-            longestWord = ++shortestWord;
-            shortestWord = temp;
-        }
+        int start = Math.min(shortestWordIndex, longestWordIndex);
+        int end = Math.max(shortestWordIndex, longestWordIndex);
+        String[] originalWords = enteredText.split(" ");
 
-        for (int i = shortestWord; i < longestWord; i++) {
-            words[i] = words[i].toUpperCase();
+        for (int i = start; i <= end; i++) {
+            originalWords[i] = originalWords[i].toUpperCase();
         }
 
         StringBuilder outputText = new StringBuilder();
-        for (String word : words) {
+        for (String word : originalWords) {
             outputText.append(word).append(" ");
         }
 
