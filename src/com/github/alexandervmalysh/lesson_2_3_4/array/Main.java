@@ -11,7 +11,6 @@ public class Main {
         execTypewriterEffect();
     }
 
-    //    1. РЕВЕРС БАНКОВСКИХ ТРАНЗАКЦИЙ
     public static void execTransactionReverser() {
         int[] original = new int[]{};
         int[] reversed = Arrays.reverse(original);
@@ -34,12 +33,10 @@ public class Main {
         Console.printTransactions(original, reversed);
     }
 
-    //    2. АНИМАЦИЯ ЗАГРУЗКИ
     public static void execHackingAnimation() throws InterruptedException {
         Console.printHackingResult(Arrays.simulateHacking());
     }
 
-    //    3. ВЫЧИСЛЕНИЕ ФАКТОРИАЛА
     public static void execFactorialCalculator() {
         int[] numbers = {};
         long[] factorials = Arrays.calcFactorials(numbers);
@@ -62,7 +59,6 @@ public class Main {
         Console.printFactorialExpr(numbers, factorials);
     }
 
-    //    4. УДАЛЕНИЕ ЭЛЕМЕНТОВ МАССИВА, ПРЕВЫШАЮЩИХ ЗАДАННОЕ ЗНАЧЕНИЕ
     public static void execArrayThresholdFilter() {
         float[] original = Arrays.generateRandomArray();
 
@@ -79,7 +75,6 @@ public class Main {
         Console.printArrayComparison(original, modified, 14);
     }
 
-    //    5. ВЫВОД ОТСОРТИРОВАННЫХ СИМВОЛОВ В ВИДЕ ТРЕУГОЛЬНИКА
     public static void execCharTrianglePrinter() {
         StringBuilder charTriangle = Arrays.buildCharTriangle('0', '9', true);
         Console.printCharTriangle(charTriangle);
@@ -91,7 +86,6 @@ public class Main {
         Console.printCharTriangle(charTriangle);
     }
 
-    //    6. ЗАПОЛНЕНИЕ МАССИВА УНИКАЛЬНЫМИ ЧИСЛАМИ
     public static void execUniqueArrayFiller() {
         Console.printNumbers(Arrays.generateRandomUniqueSortedArray(-30, -10, 23), 23);
         Console.printNumbers(Arrays.generateRandomUniqueSortedArray(10, 50, 10), 10);
@@ -100,7 +94,6 @@ public class Main {
         Console.printNumbers(Arrays.generateRandomUniqueSortedArray(5, -8, 2), 2);
     }
 
-    //    7. ВЫВОД ТЕКСТА С ЭФФЕКТОМ ПИШУЩЕЙ МАШИНКИ
     public static void execTypewriterEffect() throws InterruptedException {
         String enteredText = "Java - это C++, из которого убрали все пистолеты, ножи и дубинки.\n" +
                 "- James Gosling";
