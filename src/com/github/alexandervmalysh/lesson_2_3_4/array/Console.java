@@ -10,30 +10,48 @@ public class Console {
     private Console() {
     }
 
-    //    1. РЕВЕРС БАНКОВСКИХ ТРАНЗАКЦИЙ
-    public static void printTransactions(int[] original, int[] reversed) {
-        if (original == null) {
-            System.out.println("Ошибка: массив равен null\n");
+    public static void printArray(float[] array) {
+        for (int i = 0; i < array.length; i++) {
+            System.out.printf("%.3f", array[i]);
+
+            if ((i + 1) % 8 == 0 || i == array.length - 1) {
+                System.out.println();
+            } else {
+                System.out.print(" ");
+            }
+        }
+    }
+
+    public static void printArrayComparison(float[] original, float[] modified, int index) {
+        if (modified == null) {
             return;
         }
 
-        int len = original.length;
-        if (len == 0) {
-            System.out.println("Ошибка: пустой массив\n");
+        System.out.println("Исходный массив: ");
+        printArray(original);
+
+        System.out.printf("Значение из ячейки по индексу %d: %.3f%n", index, modified[index]);
+        System.out.println("Измененный массив:");
+        printArray(modified);
+
+        int zeroedCount = 0;
+        for (float numbers : original) {
+            if (numbers > modified[index]) {
+                zeroedCount++;
+            }
+        }
+
+        System.out.printf("Количество обнуленных ячеек: %d%n%n", zeroedCount);
+    }
+
+    public static void printCharTriangle(StringBuilder charTriangle) {
+        if (charTriangle == null) {
             return;
         }
-        System.out.println("Исходные транзакции: " + Arrays.toString(original));
-        System.out.println(" В обратном порядке: " + Arrays.toString(reversed) + '\n');
+
+        System.out.println(charTriangle);
     }
 
-    //    2. АНИМАЦИЯ ЗАГРУЗКИ
-    public static void printHackingResult(boolean isAccessGranted) {
-        System.out.printf("%s%s", isAccessGranted
-                ? GREEN + "Access Granted!\n\n"
-                : RED + "Access Denied!\n\n", RESET);
-    }
-
-    //    3. ВЫЧИСЛЕНИЕ ФАКТОРИАЛА
     public static void printFactorialExpr(int[] numbers, long[] factorials) {
         if (numbers == null) {
             System.out.println("Ошибка: массив равен null\n");
@@ -68,51 +86,12 @@ public class Console {
         System.out.println();
     }
 
-    //    4. УДАЛЕНИЕ ЭЛЕМЕНТОВ МАССИВА, ПРЕВЫШАЮЩИХ ЗАДАННОЕ ЗНАЧЕНИЕ
-    public static void printArrayComparison(float[] original, float[] modified, int index) {
-        if (modified == null) {
-            return;
-        }
-
-        System.out.println("Исходный массив: ");
-        printArray(original);
-
-        System.out.printf("Значение из ячейки по индексу %d: %.3f%n", index, modified[index]);
-        System.out.println("Измененный массив:");
-        printArray(modified);
-
-        int zeroedCount = 0;
-        for (float numbers : original) {
-            if (numbers > modified[index]) {
-                zeroedCount++;
-            }
-        }
-
-        System.out.printf("Количество обнуленных ячеек: %d%n%n", zeroedCount);
+    public static void printHackingResult(boolean isAccessGranted) {
+        System.out.printf("%s%s", isAccessGranted
+                ? GREEN + "Access Granted!\n\n"
+                : RED + "Access Denied!\n\n", RESET);
     }
 
-    public static void printArray(float[] array) {
-        for (int i = 0; i < array.length; i++) {
-            System.out.printf("%.3f", array[i]);
-
-            if ((i + 1) % 8 == 0 || i == array.length - 1) {
-                System.out.println();
-            } else {
-                System.out.print(" ");
-            }
-        }
-    }
-
-    //    5. ВЫВОД ОТСОРТИРОВАННЫХ СИМВОЛОВ В ВИДЕ ТРЕУГОЛЬНИКА
-    public static void printCharTriangle(StringBuilder charTriangle) {
-        if (charTriangle == null) {
-            return;
-        }
-
-        System.out.println(charTriangle);
-    }
-
-    //    6. ЗАПОЛНЕНИЕ МАССИВА УНИКАЛЬНЫМИ ЧИСЛАМИ
     public static void printNumbers(int[] uniqueNumbers, int numbersPerLine) {
         if (uniqueNumbers == null) {
             return;
@@ -129,7 +108,21 @@ public class Console {
         System.out.println();
     }
 
-    //    7. ВЫВОД ТЕКСТА С ЭФФЕКТОМ ПИШУЩЕЙ МАШИНКИ
+    public static void printTransactions(int[] original, int[] reversed) {
+        if (original == null) {
+            System.out.println("Ошибка: массив равен null\n");
+            return;
+        }
+
+        int len = original.length;
+        if (len == 0) {
+            System.out.println("Ошибка: пустой массив\n");
+            return;
+        }
+        System.out.println("Исходные транзакции: " + Arrays.toString(original));
+        System.out.println(" В обратном порядке: " + Arrays.toString(reversed) + '\n');
+    }
+
     public static void type(String enteredText) throws InterruptedException {
         if (enteredText == null || enteredText.isBlank()) {
             return;
@@ -142,8 +135,3 @@ public class Console {
         System.out.println("\n");
     }
 }
-/*
-1) printHackingResult - добавил \n\n, чтобы не вывод не слипался с другими
-задачами.
-
- */

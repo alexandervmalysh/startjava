@@ -4,36 +4,30 @@ public class Arrays {
     private Arrays() {
     }
 
-    //    1. РЕВЕРС БАНКОВСКИХ ТРАНЗАКЦИЙ
-    public static int[] reverse(int[] original) {
-        if (original == null) {
+    public static StringBuilder buildCharTriangle(char leftBorder, char rightBorder, boolean direction) {
+        if (leftBorder > rightBorder) {
+            System.out.printf("Ошибка: левая граница %d > правой %d%n%n",
+                    (int) leftBorder, (int) rightBorder);
             return null;
         }
 
-        int len = original.length - 1;
-        int[] reversed = new int[original.length];
+        char[] chars = new char[rightBorder - leftBorder + 1];
+        int len = chars.length;
 
-        for (int element : original) {
-            reversed[len--] = element;
+        for (int i = 0; i < len; i++) {
+            chars[i] = direction ? leftBorder++ : rightBorder--;
         }
-        return reversed;
+
+        StringBuilder charTriangle = new StringBuilder();
+
+        for (int i = 0; i < len; i++) {
+            charTriangle.repeat(" ", len - 1 - i);
+            charTriangle.append(chars[i]).repeat(chars[i], i * 2).append("\n");
+        }
+
+        return charTriangle;
     }
 
-    //    2. АНИМАЦИЯ ЗАГРУЗКИ
-    public static boolean simulateHacking() throws InterruptedException {
-        char[] spins = {'-', '\\', '|', '/'};
-        int len = spins.length;
-
-        System.out.print("Hacking: ");
-        for (int i = 0; i < 3 * len; i++) {
-            System.out.print(spins[i % len]);
-            Thread.sleep(250);
-            System.out.print("\b");
-        }
-        return (int) (Math.random() * 100) > 70;
-    }
-
-    //    3. ВЫЧИСЛЕНИЕ ФАКТОРИАЛА
     public static long[] calcFactorials(int... numbers) {
         if (numbers == null) {
             return null;
@@ -51,17 +45,6 @@ public class Arrays {
             factorials[i] = factorialValue;
         }
         return factorials;
-    }
-
-    //    4. УДАЛЕНИЕ ЭЛЕМЕНТОВ МАССИВА, ПРЕВЫШАЮЩИХ ЗАДАННОЕ ЗНАЧЕНИЕ
-    public static float[] generateRandomArray() {
-        float[] original = new float[15];
-
-        for (int i = 0; i < original.length; i++) {
-            original[i] = (float) Math.random();
-        }
-
-        return original;
     }
 
     public static float[] filterAboveIndexValue(float[] original, int index) {
@@ -87,32 +70,16 @@ public class Arrays {
         return modified;
     }
 
-    //    5. ВЫВОД ОТСОРТИРОВАННЫХ СИМВОЛОВ В ВИДЕ ТРЕУГОЛЬНИКА
-    public static StringBuilder buildCharTriangle(char leftBorder, char rightBorder, boolean direction) {
-        if (leftBorder > rightBorder) {
-            System.out.printf("Ошибка: левая граница %d > правой %d%n%n",
-                    (int) leftBorder, (int) rightBorder);
-            return null;
+    public static float[] generateRandomArray() {
+        float[] original = new float[15];
+
+        for (int i = 0; i < original.length; i++) {
+            original[i] = (float) Math.random();
         }
 
-        char[] chars = new char[rightBorder - leftBorder + 1];
-        int len = chars.length;
-
-        for (int i = 0; i < len; i++) {
-            chars[i] = direction ? leftBorder++ : rightBorder--;
-        }
-
-        StringBuilder charTriangle = new StringBuilder();
-
-        for (int i = 0; i < len; i++) {
-            charTriangle.repeat(" ", len - 1 - i);
-            charTriangle.append(chars[i]).repeat(chars[i], i * 2).append("\n");
-        }
-
-        return charTriangle;
+        return original;
     }
 
-    //    6. ЗАПОЛНЕНИЕ МАССИВА УНИКАЛЬНЫМИ ЧИСЛАМИ
     public static int[] generateRandomUniqueSortedArray(int leftRange, int rightRange, int numbersPerLine) {
         if (numbersPerLine < 1) {
             System.out.printf("Ошибка: количество чисел в строке не должно быть < 1 (%d)%n%n",
@@ -156,7 +123,33 @@ public class Arrays {
         return uniqueNumbers;
     }
 
-    //    7. ВЫВОД ТЕКСТА С ЭФФЕКТОМ ПИШУЩЕЙ МАШИНКИ
+    public static int[] reverse(int[] original) {
+        if (original == null) {
+            return null;
+        }
+
+        int len = original.length - 1;
+        int[] reversed = new int[original.length];
+
+        for (int element : original) {
+            reversed[len--] = element;
+        }
+        return reversed;
+    }
+
+    public static boolean simulateHacking() throws InterruptedException {
+        char[] spins = {'-', '\\', '|', '/'};
+        int len = spins.length;
+
+        System.out.print("Hacking: ");
+        for (int i = 0; i < 3 * len; i++) {
+            System.out.print(spins[i % len]);
+            Thread.sleep(250);
+            System.out.print("\b");
+        }
+        return (int) (Math.random() * 100) > 70;
+    }
+
     public static String toUpperCaseRange(String enteredText) {
         if (enteredText == null || enteredText.isBlank()) {
             System.out.println("Ошибка: строка " + (enteredText == null ? "равна null" : "пустая") + "\n");
@@ -200,11 +193,3 @@ public class Arrays {
         return outputText.toString().trim();
     }
 }
-
-/*
-1) Исправил имена одинаковых методов generateRandomArray() -
-для метода задачи ArrayThresholdFilter оставил как есть, а у
-UniqueArrayFiller изменил имя метода на generateRandomUniqueSortedArray(),
-что вроде как ближе по смыслу. Я вроде понимаю, что по сигнатуре это разные
-методы, но их отслеживать по одинаковым именам сложнее.
- */
