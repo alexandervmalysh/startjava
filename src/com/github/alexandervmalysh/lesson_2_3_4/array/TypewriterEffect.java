@@ -18,34 +18,30 @@ public class TypewriterEffect {
     }
 
     private static String toUpperCaseRange(String enteredText) {
-        if (enteredText == null) {
-            System.out.println("Ошибка: строка равна null\n");
-            return null;
-        }
-
-        if (enteredText.isBlank()) {
-            System.out.println("Ошибка: строка пустая\n");
+        if (enteredText == null || enteredText.isBlank()) {
+            System.out.println("Ошибка: строка " + (enteredText == null ? "равна null" : "пустая") + "\n");
             return null;
         }
 
         String[] words = enteredText.split(" ");
-        int[] cleanLengths = new int[words.length];
         int shortestWordIndex = 0;
         int longestWordIndex = 0;
+        int shortestLength = Integer.MAX_VALUE;
+        int longestLength = 0;
 
         for (int i = 0; i < words.length; i++) {
             String cleanWord = words[i].replaceAll("\\p{P}", "");
-            cleanLengths[i] = cleanWord.length();
-        }
+            if (cleanWord.isBlank()) continue;
 
-        for (int i = 0; i < cleanLengths.length; i++) {
-            if (cleanLengths[i] == 0) continue;
+            int currentLength = cleanWord.length();
 
-            if (cleanLengths[i] < cleanLengths[shortestWordIndex]) {
+            if (currentLength < shortestLength) {
                 shortestWordIndex = i;
+                shortestLength = currentLength;
             }
-            if (cleanLengths[i] > cleanLengths[longestWordIndex]) {
+            if (currentLength > longestLength) {
                 longestWordIndex = i;
+                longestLength = currentLength;
             }
         }
 
