@@ -80,7 +80,7 @@ public class Arrays {
         return original;
     }
 
-    public static int[] generateRandomUniqueSortedArray(int leftRange, int rightRange, int numbersPerLine) {
+    public static int[] fillUniqueSorted(int leftRange, int rightRange, int numbersPerLine) {
         if (numbersPerLine < 1) {
             System.out.printf("Ошибка: количество чисел в строке не должно быть < 1 (%d)%n%n",
                     numbersPerLine);
@@ -141,11 +141,10 @@ public class Arrays {
         char[] spins = {'-', '\\', '|', '/'};
         int len = spins.length;
 
-        System.out.print("Hacking: ");
+        System.out.print("Hacking:  ");
         for (int i = 0; i < 3 * len; i++) {
-            System.out.print(spins[i % len]);
+            System.out.print("\b" + spins[i % len]);
             Thread.sleep(250);
-            System.out.print("\b");
         }
         return (int) (Math.random() * 100) > 70;
     }

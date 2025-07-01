@@ -44,7 +44,7 @@ public class Console {
         System.out.printf("Количество обнуленных ячеек: %d%n%n", zeroedCount);
     }
 
-    public static void printCharTriangle(StringBuilder charTriangle) {
+    public static void printStringBuilder(StringBuilder charTriangle) {
         if (charTriangle == null) {
             return;
         }
@@ -92,7 +92,7 @@ public class Console {
                 : RED + "Access Denied!\n\n", RESET);
     }
 
-    public static void printNumbers(int[] uniqueNumbers, int numbersPerLine) {
+    public static void printNumbersInLines(int[] uniqueNumbers, int numbersPerLine) {
         if (uniqueNumbers == null) {
             return;
         }
@@ -114,8 +114,7 @@ public class Console {
             return;
         }
 
-        int len = original.length;
-        if (len == 0) {
+        if (original.length == 0) {
             System.out.println("Ошибка: пустой массив\n");
             return;
         }

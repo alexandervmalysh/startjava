@@ -11,8 +11,8 @@ public class Main {
         execTypewriterEffect();
     }
 
-    public static void execTransactionReverser() {
-        int[] original = new int[]{};
+    private static void execTransactionReverser() {
+        int[] original = {};
         int[] reversed = Arrays.reverse(original);
         Console.printTransactions(original, reversed);
 
@@ -33,11 +33,11 @@ public class Main {
         Console.printTransactions(original, reversed);
     }
 
-    public static void execHackingAnimation() throws InterruptedException {
+    private static void execHackingAnimation() throws InterruptedException {
         Console.printHackingResult(Arrays.simulateHacking());
     }
 
-    public static void execFactorialCalculator() {
+    private static void execFactorialCalculator() {
         int[] numbers = {};
         long[] factorials = Arrays.calcFactorials(numbers);
         Console.printFactorialExpr(numbers, factorials);
@@ -59,7 +59,7 @@ public class Main {
         Console.printFactorialExpr(numbers, factorials);
     }
 
-    public static void execArrayThresholdFilter() {
+    private static void execArrayThresholdFilter() {
         float[] original = Arrays.generateRandomArray();
 
         float[] modified = Arrays.filterAboveIndexValue(original, -1);
@@ -75,26 +75,26 @@ public class Main {
         Console.printArrayComparison(original, modified, 14);
     }
 
-    public static void execCharTrianglePrinter() {
+    private static void execCharTrianglePrinter() {
         StringBuilder charTriangle = Arrays.buildCharTriangle('0', '9', true);
-        Console.printCharTriangle(charTriangle);
+        Console.printStringBuilder(charTriangle);
 
         charTriangle = Arrays.buildCharTriangle('/', '!', false);
-        Console.printCharTriangle(charTriangle);
+        Console.printStringBuilder(charTriangle);
 
         charTriangle = Arrays.buildCharTriangle('A', 'J', false);
-        Console.printCharTriangle(charTriangle);
+        Console.printStringBuilder(charTriangle);
     }
 
-    public static void execUniqueArrayFiller() {
-        Console.printNumbers(Arrays.generateRandomUniqueSortedArray(-30, -10, 23), 23);
-        Console.printNumbers(Arrays.generateRandomUniqueSortedArray(10, 50, 10), 10);
-        Console.printNumbers(Arrays.generateRandomUniqueSortedArray(-34, -34, 0), 0);
-        Console.printNumbers(Arrays.generateRandomUniqueSortedArray(-1, 2, -3), -3);
-        Console.printNumbers(Arrays.generateRandomUniqueSortedArray(5, -8, 2), 2);
+    private static void execUniqueArrayFiller() {
+        Console.printNumbersInLines(Arrays.fillUniqueSorted(-30, -10, 23), 23);
+        Console.printNumbersInLines(Arrays.fillUniqueSorted(10, 50, 10), 10);
+        Console.printNumbersInLines(Arrays.fillUniqueSorted(-34, -34, 0), 0);
+        Console.printNumbersInLines(Arrays.fillUniqueSorted(-1, 2, -3), -3);
+        Console.printNumbersInLines(Arrays.fillUniqueSorted(5, -8, 2), 2);
     }
 
-    public static void execTypewriterEffect() throws InterruptedException {
+    private static void execTypewriterEffect() throws InterruptedException {
         String enteredText = "Java - это C++, из которого убрали все пистолеты, ножи и дубинки.\n" +
                 "- James Gosling";
         Console.type(Arrays.toUpperCaseRange(enteredText));
