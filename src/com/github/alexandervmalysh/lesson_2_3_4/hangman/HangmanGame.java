@@ -1,5 +1,6 @@
 package com.github.alexandervmalysh.lesson_2_3_4.hangman;
 
+import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -50,9 +51,7 @@ public class HangmanGame {
 
     private void makeMaskedWord() {
         maskedWord = new char[wordToGuess.length()];
-        for (int i = 0; i < maskedWord.length; i++) {
-            maskedWord[i] = '_';
-        }
+        Arrays.fill(maskedWord, '_');
     }
 
     public void play() {
