@@ -5,7 +5,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class HangmanGame {
-    private final String[] hangedMan = {
+    private final String[] gallows = {
             "_______",
             "|     |",
             "|     @",
@@ -26,22 +26,15 @@ public class HangmanGame {
     };
     private final String wordToGuess;
     private char[] maskedWord;
-    private final char[] guessedLetters;
-    private final char[] wrongLetters;
-    private int guessedCount;
-    private int wrongCount;
+    private final StringBuilder wrongLetters;
     private int totalAttempts;
-    private int hangedManStep;
+    private int gallowsStep;
 
     public HangmanGame() {
         wordToGuess = chooseSecretWord();
         makeMaskedWord();
-        guessedLetters = new char[wordToGuess.length()];
-        wrongLetters = new char[hangedMan.length + 1];
-        totalAttempts = hangedMan.length;
-        hangedManStep = 0;
-        guessedCount = 0;
-        wrongCount = 0;
+        wrongLetters = new StringBuilder();
+        totalAttempts = gallows.length;
     }
 
     private String chooseSecretWord() {
@@ -63,10 +56,12 @@ public class HangmanGame {
 
             System.out.print("\nВведите букву: ");
             String input = scanner.nextLine().toUpperCase();
+
             if (input.length() != 1) {
                 System.out.println("\nОшибка: введите одну букву");
                 continue;
             }
+
             char letter = input.charAt(0);
 
             if (!isCyrillic(letter)) {
@@ -80,28 +75,28 @@ public class HangmanGame {
             }
 
             if (wordToGuess.indexOf(letter) != -1) {
-                guessedLetters[guessedCount++] = letter;
                 updateMaskedWord(letter);
-                if (hangedManStep > 0) {
-                    hangedManStep--;
+
+                if (gallowsStep > 0) {
+                    gallowsStep--;
                     totalAttempts++;
                 }
+
                 if (isWordGuessed()) {
                     gameOver = true;
                     System.out.println("Поздравляем! Вы угадали слово: " + wordToGuess);
                 }
             } else {
-                wrongLetters[wrongCount++] = letter;
-                hangedManStep++;
+                wrongLetters.append(letter);
+                gallowsStep++;
                 totalAttempts--;
-                if (hangedManStep >= hangedMan.length) {
+                if (gallowsStep >= gallows.length) {
                     gameOver = true;
-                    printHangedMan();
+                    printGallows();
                     System.out.println("Вы проиграли! Загаданное слово: " + wordToGuess);
                 }
             }
         }
-        askToPlayAgain(scanner);
     }
 
     private void printGameState() {
@@ -109,20 +104,17 @@ public class HangmanGame {
         for (char maskedLetter : maskedWord) {
             System.out.print(maskedLetter + " ");
         }
+
         System.out.println("\nВведенные буквы: " + getWrongLetters());
         System.out.println("Осталось попыток: " + totalAttempts);
 
-        if (hangedManStep > 0) {
-            printHangedMan();
+        if (gallowsStep > 0) {
+            printGallows();
         }
     }
 
     private String getWrongLetters() {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < wrongCount; i++) {
-            stringBuilder.append(wrongLetters[i]).append(" ");
-        }
-        return stringBuilder.toString();
+        return wrongLetters.toString().replace("", " ").trim();
     }
 
     private boolean isCyrillic(char letter) {
@@ -130,13 +122,11 @@ public class HangmanGame {
     }
 
     private boolean isAlreadyGuessed(char letter) {
-        for (int i = 0; i < guessedCount; i++) {
-            if (guessedLetters[i] == letter) return true;
+        for (char maskedLetter : maskedWord) {
+            if (maskedLetter == letter) return true;
         }
-        for (int i = 0; i < wrongCount; i++) {
-            if (wrongLetters[i] == letter) return true;
-        }
-        return false;
+
+        return wrongLetters.indexOf(String.valueOf(letter)) != -1;
     }
 
     private void updateMaskedWord(char letter) {
@@ -154,27 +144,9 @@ public class HangmanGame {
         return true;
     }
 
-    private void printHangedMan() {
-        for (int i = 0; i < hangedManStep; i++) {
-            System.out.println(hangedMan[i]);
-        }
-    }
-
-    private void askToPlayAgain(Scanner scanner) {
-        System.out.print("\nХотите сыграть еще раз? [yes/no]: ");
-
-        while (true) {
-            String answer = scanner.nextLine().toLowerCase();
-
-            if (answer.equals("yes")) {
-                new HangmanGame().play();
-                return;
-            } else if (answer.equals("no")) {
-                System.out.println("\nСпасибо за игру!");
-                return;
-            }
-
-            System.out.print("\nВведите корректный ответ [yes / no]: ");
+    private void printGallows() {
+        for (int i = 0; i < gallowsStep; i++) {
+            System.out.println(gallows[i]);
         }
     }
 }
