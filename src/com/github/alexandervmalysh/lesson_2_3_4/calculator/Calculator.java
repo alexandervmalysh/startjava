@@ -9,11 +9,6 @@ public class Calculator {
             return Double.NaN;
         }
 
-        if (!isInteger(parts[0]) || !isInteger(parts[2])) {
-            System.out.println("Ошибка: неверный формат чисел");
-            return Double.NaN;
-        }
-
         int firstNumber = Integer.parseInt(parts[0]);
         char operation = parts[1].charAt(0);
         int secondNumber = Integer.parseInt(parts[2]);
@@ -23,49 +18,22 @@ public class Calculator {
             return Double.NaN;
         }
 
-        double result = 0.0;
-
         switch (operation) {
             case '+':
-                result = firstNumber + secondNumber;
-                break;
+                return firstNumber + secondNumber;
             case '-':
-                result = firstNumber - secondNumber;
-                break;
+                return firstNumber - secondNumber;
             case '*':
-                result = firstNumber * secondNumber;
-                break;
+                return firstNumber * secondNumber;
             case '/':
-                result = (double) firstNumber / secondNumber;
-                break;
+                return (double) firstNumber / secondNumber;
             case '^':
-                result = Math.pow(firstNumber, secondNumber);
-                break;
+                return Math.pow(firstNumber, secondNumber);
             case '%':
-                result = Math.floorMod(firstNumber, secondNumber);
-                break;
+                return Math.floorMod(firstNumber, secondNumber);
             default:
                 System.out.println("Ошибка: операция " + operation + " не поддерживается");
                 return Double.NaN;
         }
-
-        return result;
-    }
-
-    private boolean isInteger(String s) {
-        if (s.isEmpty()) return false;
-
-        for (int i = 0; i < s.length(); i++) {
-            if (i == 0 && s.charAt(i) == '-') {
-                if (s.length() == 1) return false;
-                continue;
-            }
-
-            if (!Character.isDigit(s.charAt(i))) {
-                return false;
-            }
-        }
-
-        return true;
     }
 }

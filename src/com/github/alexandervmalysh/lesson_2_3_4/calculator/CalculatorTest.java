@@ -1,33 +1,20 @@
 package com.github.alexandervmalysh.lesson_2_3_4.calculator;
 
+import java.text.DecimalFormat;
 import java.util.Scanner;
 
 public class CalculatorTest {
     public static void main(String[] args) {
         Calculator calculator = new Calculator();
         Scanner scanner = new Scanner(System.in);
-        String answer = "yes";
+        String answer;
 
-        while (answer.equalsIgnoreCase("yes")) {
+        do {
             System.out.print("Введите выражение из трех аргументов, например, 2 ^ 10: ");
             String expression = scanner.nextLine();
 
             double result = calculator.calculate(expression);
-
-            if (!Double.isNaN(result)) {
-                String formattedResult;
-
-                if (result == (int) result) {
-                    formattedResult = String.valueOf((int) result);
-                } else {
-                    formattedResult = String.format("%.3f", result)
-                            .replace(",", ".")
-                            .replaceAll("0+$", "")
-                            .replaceAll("\\.$", "");
-                }
-
-                System.out.printf("%s = %s%n", expression, formattedResult);
-            }
+            printResult(expression, result);
 
             do {
                 System.out.print("Хотите продолжить вычисления? [yes/no]: ");
@@ -35,6 +22,15 @@ public class CalculatorTest {
             } while (!answer.equals("no") && !answer.equals("yes"));
 
             System.out.println();
+        } while (answer.equals("yes"));
+    }
+
+    private static void printResult(String expression, double result) {
+        if (!Double.isNaN(result)) {
+            DecimalFormat outputFormat = new DecimalFormat("#.###");
+            outputFormat.setDecimalSeparatorAlwaysShown(false);
+            String formattedResult = outputFormat.format(result).replace(".", ",");
+            System.out.printf("%s = %s%n", expression, formattedResult);
         }
     }
 }
