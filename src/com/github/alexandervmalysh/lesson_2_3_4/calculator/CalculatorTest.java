@@ -9,22 +9,32 @@ public class CalculatorTest {
         String answer = "yes";
 
         while (answer.equalsIgnoreCase("yes")) {
-            System.out.print("Введите первое число: ");
-            calculator.setFirstNumber(scanner.nextInt());
+            System.out.print("Введите выражение из трех аргументов, например, 2 ^ 10: ");
+            String expression = scanner.nextLine();
 
-            System.out.print("Введите знак операции (+, -, *, /, ^, %): ");
-            calculator.setOperation(scanner.next().charAt(0));
+            double result = calculator.calculate(expression);
 
-            System.out.print("Введите второе число: ");
-            calculator.setSecondNumber(scanner.nextInt());
+            if (!Double.isNaN(result)) {
+                String formattedResult;
 
-            calculator.calculate();
-            scanner.nextLine();
+                if (result == (int) result) {
+                    formattedResult = String.valueOf((int) result);
+                } else {
+                    formattedResult = String.format("%.3f", result)
+                            .replace(",", ".")
+                            .replaceAll("0+$", "")
+                            .replaceAll("\\.$", "");
+                }
+
+                System.out.printf("%s = %s%n", expression, formattedResult);
+            }
 
             do {
                 System.out.print("Хотите продолжить вычисления? [yes/no]: ");
                 answer = scanner.nextLine().toLowerCase();
             } while (!answer.equals("no") && !answer.equals("yes"));
+
+            System.out.println();
         }
     }
 }

@@ -1,26 +1,26 @@
 package com.github.alexandervmalysh.lesson_2_3_4.calculator;
 
 public class Calculator {
-    private int firstNumber;
-    private int secondNumber;
-    private char operation;
+    public double calculate(String expression) {
+        String[] parts = expression.split(" ");
 
-    public void setFirstNumber(int firstNumber) {
-        this.firstNumber = firstNumber;
-    }
+        if (parts.length != 3) {
+            System.out.println("Ошибка: неверный формат выражения");
+            return Double.NaN;
+        }
 
-    public void setSecondNumber(int secondNumber) {
-        this.secondNumber = secondNumber;
-    }
+        if (!isInteger(parts[0]) || !isInteger(parts[2])) {
+            System.out.println("Ошибка: неверный формат чисел");
+            return Double.NaN;
+        }
 
-    public void setOperation(char operation) {
-        this.operation = operation;
-    }
+        int firstNumber = Integer.parseInt(parts[0]);
+        char operation = parts[1].charAt(0);
+        int secondNumber = Integer.parseInt(parts[2]);
 
-    public void calculate() {
         if ((operation == '/' || operation == '%') && secondNumber == 0) {
             System.out.println("Ошибка: деление на ноль запрещено");
-            return;
+            return Double.NaN;
         }
 
         double result = 0.0;
@@ -36,27 +36,36 @@ public class Calculator {
                 result = firstNumber * secondNumber;
                 break;
             case '/':
-                result = firstNumber / secondNumber;
+                result = (double) firstNumber / secondNumber;
                 break;
             case '^':
-                result = power(firstNumber, secondNumber);
+                result = Math.pow(firstNumber, secondNumber);
                 break;
             case '%':
-                result = firstNumber % secondNumber;
+                result = Math.floorMod(firstNumber, secondNumber);
                 break;
             default:
                 System.out.println("Ошибка: операция " + operation + " не поддерживается");
-                return;
+                return Double.NaN;
         }
-        System.out.println("Результат вычисления: " + result);
+
+        return result;
     }
 
-    private double power(int firstNumber, int secondNumber) {
-        double result = 1.0;
-        int absSecondNumber = Math.abs(secondNumber);
-        for (int i = 0; i < absSecondNumber; i++) {
-            result *= firstNumber;
+    private boolean isInteger(String s) {
+        if (s.isEmpty()) return false;
+
+        for (int i = 0; i < s.length(); i++) {
+            if (i == 0 && s.charAt(i) == '-') {
+                if (s.length() == 1) return false;
+                continue;
+            }
+
+            if (!Character.isDigit(s.charAt(i))) {
+                return false;
+            }
         }
-        return secondNumber < 0 ? 1 / result : result;
+
+        return true;
     }
 }
