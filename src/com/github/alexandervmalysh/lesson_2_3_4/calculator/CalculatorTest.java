@@ -27,9 +27,8 @@ public class CalculatorTest {
 
     private static void printResult(String expression, double result) {
         if (!Double.isNaN(result)) {
-            DecimalFormat outputFormat = new DecimalFormat("#.###");
-            outputFormat.setDecimalSeparatorAlwaysShown(false);
-            String formattedResult = outputFormat.format(result).replace(".", ",");
+            DecimalFormat df = new DecimalFormat("#.###");
+            String formattedResult = df.format(result);
             System.out.printf("%s = %s%n", expression, formattedResult);
         }
     }
