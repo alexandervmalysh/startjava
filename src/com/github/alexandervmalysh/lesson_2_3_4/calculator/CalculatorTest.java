@@ -5,7 +5,6 @@ import java.util.Scanner;
 
 public class CalculatorTest {
     public static void main(String[] args) {
-        Calculator calculator = new Calculator();
         Scanner scanner = new Scanner(System.in);
         String answer;
 
@@ -13,8 +12,12 @@ public class CalculatorTest {
             System.out.print("Введите выражение из трех аргументов, например, 2 ^ 10: ");
             String expression = scanner.nextLine();
 
-            double result = calculator.calculate(expression);
-            printResult(expression, result);
+            try {
+                double result = Calculator.calculate(expression);
+                printResult(expression, result);
+            } catch (RuntimeException e) {
+                // Исключение уже обработано в calculate(), просто продолжаем
+            }
 
             do {
                 System.out.print("Хотите продолжить вычисления? [yes/no]: ");
@@ -26,10 +29,8 @@ public class CalculatorTest {
     }
 
     private static void printResult(String expression, double result) {
-        if (!Double.isNaN(result)) {
-            DecimalFormat df = new DecimalFormat("#.###");
-            String formattedResult = df.format(result);
-            System.out.printf("%s = %s%n", expression, formattedResult);
-        }
+        DecimalFormat df = new DecimalFormat("#.###");
+        String formattedResult = df.format(result);
+        System.out.printf("%s = %s%n", expression, formattedResult);
     }
 }
