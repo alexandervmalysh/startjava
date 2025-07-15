@@ -5,10 +5,7 @@ public class Calculator {
 
     public static double calculate(String expression) {
         try {
-            String trimmedExpression = expression.trim();
-            String[] parts = trimmedExpression.split("\\s+");
-
-            validateExpressionParts(parts);
+            String[] parts = validateExpressionParts(expression);
 
             int firstNumber = parseNumber(parts[0]);
             char operation = parseOperation(parts[1]);
@@ -26,32 +23,39 @@ public class Calculator {
                 default -> throw new UnsupportedOperationException("Операция " + operation +
                         " не поддерживается");
             };
-        } catch (IllegalArgumentException | UnsupportedOperationException | ArithmeticException exception) {
-            System.out.println(exception.getMessage());
-            throw exception;
+        } catch (UnsupportedOperationException | InvalidExpressionFormatException | NumberFormatException |
+                 ArithmeticException e) {
+            System.out.println(e.getMessage());
+            throw e;
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            throw e;
         }
     }
 
-    private static void validateExpressionParts(String[] parts) {
+    private static String[] validateExpressionParts(String expression) {
+        String[] parts = expression.trim().replaceAll("\\s+", " ").split(" ");
+
         if (parts.length != EXPECTED_PARTS_LENGTH) {
-            throw new IllegalArgumentException("Ошибка: неверный формат выражения. " +
+            throw new InvalidExpressionFormatException("Ошибка: неверный формат выражения. " +
                     "Ожидается: число | операция | число");
         }
+        return parts;
     }
 
-    private static int parseNumber(String numberStr) {
+    private static int parseNumber(String number) {
         try {
-            return Integer.parseInt(numberStr);
+            return Integer.parseInt(number);
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Ошибка: '" + numberStr + "' не является целым числом");
+            throw new NumberFormatException("Ошибка: '" + number + "' не является целым числом");
         }
     }
 
-    private static char parseOperation(String operationStr) {
-        if (operationStr.length() != 1) {
+    private static char parseOperation(String operation) {
+        if (operation.length() != 1) {
             throw new IllegalArgumentException("Ошибка: операция должна состоять из одного символа");
         }
-        return operationStr.charAt(0);
+        return operation.charAt(0);
     }
 
     private static void validateDivisionByZero(char operation, int secondNumber) {

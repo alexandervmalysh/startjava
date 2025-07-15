@@ -29,8 +29,9 @@ public class CalculatorTest {
     }
 
     private static void printResult(String expression, double result) {
+        String normalized = expression.trim().replaceAll("\\s+", " ");
         DecimalFormat df = new DecimalFormat("#.###");
         String formattedResult = df.format(result);
-        System.out.printf("%s = %s%n", expression, formattedResult);
+        System.out.printf("%s = %s%n", normalized, formattedResult);
     }
 }
