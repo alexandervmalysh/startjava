@@ -23,11 +23,7 @@ public class Calculator {
                 default -> throw new UnsupportedOperationException("Операция " + operation +
                         " не поддерживается");
             };
-        } catch (UnsupportedOperationException | InvalidExpressionFormatException | NumberFormatException |
-                 ArithmeticException e) {
-            System.out.println(e.getMessage());
-            throw e;
-        } catch (IllegalArgumentException e) {
+        } catch (RuntimeException e) {
             System.out.println(e.getMessage());
             throw e;
         }
