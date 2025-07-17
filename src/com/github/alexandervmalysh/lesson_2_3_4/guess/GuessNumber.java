@@ -1,10 +1,15 @@
 package com.github.alexandervmalysh.lesson_2_3_4.guess;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class GuessNumber {
-    private Player player1;
-    private Player player2;
+    private static final int MAX_ATTEMPTS = 10;
+    private static final int MIN_NUMBER = 1;
+    private static final int MAX_NUMBER = 100;
+
+    private final Player player1;
+    private final Player player2;
     private int secretNumber;
 
     public GuessNumber(Player player1, Player player2) {
@@ -14,42 +19,86 @@ public class GuessNumber {
 
     public void start() {
         generateSecretNumber();
+        System.out.println("\nИгра началась! У каждого игрока по " + MAX_ATTEMPTS + " попыток");
         startGameplay();
+        printPlayersNumbers();
     }
 
     private void generateSecretNumber() {
-        secretNumber = (int) (Math.random() * 100 + 1);
+        secretNumber = (int) (Math.random() * MAX_NUMBER + MIN_NUMBER);
     }
 
     private void startGameplay() {
         Scanner scanner = new Scanner(System.in);
-        Player currentPlayer = player1;
+        boolean isGuessed = false;
+        int attempt = 1;
 
-        while (true) {
-            System.out.print(currentPlayer.getName() + ", введите число для угадывания: ");
-            int playerGuess = scanner.nextInt();
+        while (attempt <= MAX_ATTEMPTS && !isGuessed) {
+            System.out.println("\nПопытка " + attempt);
 
-            if (checkGuess(currentPlayer, playerGuess)) {
-                break;
+            if (player1.hasAttempts(attempt)) {
+                System.out.println("У " + player1.getName() + " закончились попытки!");
+            } else {
+                System.out.print("Число вводит " + player1.getName() + ": ");
+                int player1Guess = getValidNumber(player1, scanner);
+                if (checkGuess(player1, player1Guess, attempt)) {
+                    isGuessed = true;
+                    continue;
+                }
             }
 
-            currentPlayer = (currentPlayer == player1) ? player2 : player1;
+            if (player2.hasAttempts(attempt)) {
+                System.out.println("У " + player2.getName() + " закончились попытки!");
+            } else {
+                System.out.print("Число вводит " + player2.getName() + ": ");
+                int player2Guess = getValidNumber(player2, scanner);
+                if (checkGuess(player1, player2Guess, attempt)) {
+                    isGuessed = true;
+                }
+            }
+            attempt++;
         }
-        scanner.nextLine();
+
+        if (!isGuessed) {
+            System.out.println("\nНикто не угадал число!");
+        }
     }
 
-    private boolean checkGuess(Player player, int guess) {
+    private int getValidNumber(Player player, Scanner scanner) {
+        while (true) {
+            if (!scanner.hasNextInt()) {
+                System.out.println("Ошибка: введите целое число!");
+                scanner.next();
+                continue;
+            }
+
+            int number = scanner.nextInt();
+            try {
+                player.addNumber(number);
+                return number;
+            } catch (InvalidNumberException e) {
+                System.out.print(e.getMessage());
+            }
+        }
+    }
+
+    private boolean checkGuess(Player player, int guess, int attempt) {
         if (guess == secretNumber) {
-            System.out.println("Поздравляем, " + player.getName() +
-                    "! Вы угадали число и победили!");
+            System.out.println("\n" + player.getName() + " угадал число " + secretNumber + " с " +
+                    attempt + "-й попытки");
             return true;
         }
 
-        if (guess < secretNumber) {
-            System.out.println(guess + " меньше того, что загадал компьютер");
-        } else {
-            System.out.println(guess + " больше того, что загадал компьютер");
-        }
+        System.out.println(guess + (guess < secretNumber ? " меньше" : " больше") +
+                " того, что загадал компьютер");
         return false;
+    }
+
+    private void printPlayersNumbers() {
+        System.out.println(player1.getName() + ": " + Arrays.toString(player1.getNumbers()));
+        System.out.println(player2.getName() + ": " + Arrays.toString(player2.getNumbers()));
+
+        player1.clearNumbers();
+        player2.clearNumbers();
     }
 }
