@@ -1,29 +1,68 @@
 package com.github.alexandervmalysh.lesson_2_3_4.guess;
 
 import java.util.Arrays;
+import java.util.Random;
 import java.util.Scanner;
 
 public class GuessNumber {
     public static final int MAX_ATTEMPTS = 10;
     public static final int MIN_NUMBER = 1;
     public static final int MAX_NUMBER = 100;
+    public static final int ROUNDS_COUNT = 3;
 
-    private final Player player1;
-    private final Player player2;
+    private final Player[] players;
+    private final int playersCount;
     private int secretNumber;
+    public int[] scores;
 
-    public GuessNumber(Player player1, Player player2) {
-        this.player1 = player1;
-        this.player2 = player2;
+    public GuessNumber(Player... players) {
+        this.players = players;
+        this.playersCount = players.length;
+        this.scores = new int[playersCount];
     }
 
     public void start() {
-        System.out.println("\nИгра началась! У каждого игрока по " + MAX_ATTEMPTS + " попыток");
+        shufflePlayersOrder();
 
+        System.out.println("\nИгра началась! У каждого игрока по " + MAX_ATTEMPTS +
+                " попыток в каждом раунде.\nВсего будет " +
+                ROUNDS_COUNT + " раунда");
+
+        Arrays.fill(scores, 0);
+
+        for (int round = 1; round <= ROUNDS_COUNT; round++) {
+            System.out.println("\n--- Раунд " + round + " ---");
+            playRound();
+        }
+
+        determineWinner();
+    }
+
+    public void playRound() {
         generateSecretNumber();
         startGameplay();
         printPlayersNumbers();
         clearPlayersNumbers();
+    }
+
+    private void shufflePlayersOrder() {
+        Random random = new Random();
+
+        for (int i = playersCount - 1; i > 0; i--) {
+            int j = random.nextInt(i + 1);
+            Player temp = players[i];
+            players[i] = players[j];
+            players[j] = temp;
+        }
+
+        System.out.print("\nПорядок игроков для угадывания: ");
+        for (int i = 0; i < playersCount; i++) {
+            System.out.print(players[i].getName());
+            if (i < playersCount - 1) {
+                System.out.print(", ");
+            }
+        }
+        System.out.println();
     }
 
     private void generateSecretNumber() {
@@ -38,30 +77,30 @@ public class GuessNumber {
         while (attempt <= MAX_ATTEMPTS && !isGuessed) {
             System.out.println("\nПопытка " + attempt);
 
-            try {
-                int player1Guess = inputNumber(player1, scanner);
-                if (checkGuess(player1, player1Guess, attempt)) {
-                    isGuessed = true;
-                    continue;
-                }
-            } catch (GameException e) {
-                System.out.print(e.getMessage());
-            }
+            for (Player player : players) {
+                try {
+                    int playerGuess = inputNumber(player, scanner);
+                    if (checkGuess(player, playerGuess, attempt)) {
+                        isGuessed = true;
 
-            try {
-                int player2Guess = inputNumber(player2, scanner);
-                if (checkGuess(player1, player2Guess, attempt)) {
-                    isGuessed = true;
+                        for (int i = 0; i < playersCount; i++) {
+                            if (players[i].equals(player)) {
+                                scores[i]++;
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                } catch (GameException e) {
+                    System.out.print(e.getMessage());
                 }
-            } catch (GameException e) {
-                System.out.print(e.getMessage());
             }
 
             attempt++;
         }
 
         if (!isGuessed) {
-            System.out.println("\nНикто не угадал число!");
+            System.out.println("\nНикто не угадал число в этом раунде!");
         }
     }
 
@@ -98,12 +137,61 @@ public class GuessNumber {
     }
 
     private void printPlayersNumbers() {
-        System.out.println(player1.getName() + ": " + Arrays.toString(player1.getNumbers()));
-        System.out.println(player2.getName() + ": " + Arrays.toString(player2.getNumbers()));
+        System.out.println("\nЧисла игроков: ");
+
+        for (Player player : players) {
+            int[] numbers = player.getNumbers();
+
+            for (int num : numbers) {
+                System.out.print(num + " ");
+            }
+            System.out.println();
+        }
     }
 
     private void clearPlayersNumbers() {
-        player1.clear();
-        player2.clear();
+        for (Player player : players) {
+            player.clear();
+        }
+    }
+
+    private void determineWinner() {
+        System.out.println("\n--- Результаты игры ---");
+
+        for (int i = 0; i < playersCount; i++) {
+            System.out.println(players[i].getName() + ": " + scores[i] + " победных раундов");
+        }
+
+        int maxScore = scores[0];
+        int winnersCount = 1;
+
+        for (int i = 1; i < scores.length; i++) {
+            if (scores[i] > maxScore) {
+                maxScore = scores[i];
+                winnersCount = 1;
+            } else if (scores[i] == maxScore) {
+                winnersCount++;
+            }
+        }
+
+        if (maxScore == 0) {
+            System.out.println("Все игроки проиграли - никто не угадал число ни в одном раунде!");
+        } else if (winnersCount > 1) {
+            System.out.println("\nНичья между: ");
+            for (int i = 0; i < playersCount; i++) {
+                if (scores[i] == maxScore) {
+                    System.out.print(players[i].getName() + " ");
+                }
+            }
+            System.out.println("с результатом " + maxScore + " победных раундов");
+        } else {
+            for (int i = 0; i < playersCount; i++) {
+                if (scores[i] == maxScore) {
+                    System.out.println("Победитель: " + players[i].getName() +
+                            " с результатом " + maxScore + " победных раундов");
+                    break;
+                }
+            }
+        }
     }
 }

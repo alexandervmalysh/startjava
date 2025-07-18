@@ -12,13 +12,17 @@ public class GuessNumberTest {
         System.out.print("Введите имя второго игрока: ");
         Player player2 = new Player(console.nextLine());
 
-        GuessNumber game = new GuessNumber(player1, player2);
+        System.out.print("Введите имя третьего игрока: ");
+        Player player3 = new Player(console.nextLine());
+
+        GuessNumber game;
 
         String answer;
         do {
+            game = new GuessNumber(player1, player2, player3);
             game.start();
             do {
-                System.out.print("Хотите продолжить игру? [yes/no]: ");
+                System.out.print("\nХотите продолжить игру? [yes/no]: ");
                 answer = console.nextLine().toLowerCase();
             } while (!"yes".equals(answer) && !"no".equals(answer));
         } while (!"no".equals(answer));
