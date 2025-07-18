@@ -10,7 +10,7 @@ public class CalculatorTest {
 
         do {
             System.out.print("Введите выражение из трех аргументов, например, 2 ^ 10: ");
-            String expression = getNormalizedExpression(scanner);
+            String expression = inputExpression(scanner);
 
             try {
                 double result = Calculator.calculate(expression);
@@ -28,7 +28,7 @@ public class CalculatorTest {
         } while (answer.equals("yes"));
     }
 
-    private static String getNormalizedExpression(Scanner scanner) {
+    private static String inputExpression(Scanner scanner) {
         return scanner.nextLine().trim().replaceAll("\\s+", " ");
     }
 
