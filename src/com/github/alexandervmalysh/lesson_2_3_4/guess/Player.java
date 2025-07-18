@@ -3,13 +3,9 @@ package com.github.alexandervmalysh.lesson_2_3_4.guess;
 import java.util.Arrays;
 
 public class Player {
-    private static final int MAX_ATTEMPTS = 10;
-    private static final int MIN_NUMBER = 1;
-    private static final int MAX_NUMBER = 100;
-
-    private final int[] numbers = new int[MAX_ATTEMPTS];
+    private final int[] numbers = new int[GuessNumber.MAX_ATTEMPTS];
     private final String name;
-    private int currentIndex = 0;
+    private int currentAttempt;
 
     public Player(String name) {
         this.name = name;
@@ -20,28 +16,24 @@ public class Player {
     }
 
     public void addNumber(int number) {
-        if (currentIndex >= MAX_ATTEMPTS) {
-            throw new InvalidNumberException("Закончились попытки!");
+        if (currentAttempt >= GuessNumber.MAX_ATTEMPTS) {
+            throw new GameException("У " + name + " закончились попытки!\n");
         }
-        if (number < MIN_NUMBER || number > MAX_NUMBER) {
-            throw new InvalidNumberException(
-                    "Число должно входить в отрезок [" + MIN_NUMBER + ", " + MAX_NUMBER + "].\n" +
-                    "Попробуйте еще раз: "
+        if (number < GuessNumber.MIN_NUMBER || number > GuessNumber.MAX_NUMBER) {
+            throw new GameException(
+                    "Ошибка: число должно входить в отрезок [" + GuessNumber.MIN_NUMBER + ", " +
+                    GuessNumber.MAX_NUMBER + "].\n" + "Попробуйте еще раз: "
             );
         }
-        numbers[currentIndex++] = number;
+        numbers[currentAttempt++] = number;
     }
 
     public int[] getNumbers() {
-        return Arrays.copyOf(numbers, currentIndex);
+        return Arrays.copyOf(numbers, currentAttempt);
     }
 
-    public void clearNumbers() {
-        Arrays.fill(numbers, 0, currentIndex, 0);
-        currentIndex = 0;
-    }
-
-    public boolean hasAttempts(int currentAttempt) {
-        return currentAttempt > MAX_ATTEMPTS;
+    public void clear() {
+        Arrays.fill(numbers, 0, currentAttempt, 0);
+        currentAttempt = 0;
     }
 }
