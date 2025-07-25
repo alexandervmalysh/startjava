@@ -6,6 +6,7 @@ public class Player {
     private final int[] numbers = new int[GuessNumber.MAX_ATTEMPTS];
     private final String name;
     private int currentAttempt;
+    private int winsCount;
 
     public Player(String name) {
         this.name = name;
@@ -15,12 +16,20 @@ public class Player {
         return name;
     }
 
+    public int getWinsCount() {
+        return winsCount;
+    }
+
+    public void incrementWinsCount() {
+        winsCount++;
+    }
+
     public void addNumber(int number) {
         if (currentAttempt >= GuessNumber.MAX_ATTEMPTS) {
-            throw new GameException("У " + name + " закончились попытки!\n");
+            throw new AttemptsExceededException("У " + name + " закончились попытки!\n");
         }
         if (number < GuessNumber.MIN_NUMBER || number > GuessNumber.MAX_NUMBER) {
-            throw new GameException(
+            throw new OutOfRangeException(
                     "Ошибка: число должно входить в отрезок [" + GuessNumber.MIN_NUMBER + ", " +
                     GuessNumber.MAX_NUMBER + "].\n" + "Попробуйте еще раз: "
             );
