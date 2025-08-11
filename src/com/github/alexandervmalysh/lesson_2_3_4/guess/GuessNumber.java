@@ -1,6 +1,7 @@
 package com.github.alexandervmalysh.lesson_2_3_4.guess;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -72,25 +73,20 @@ public class GuessNumber {
     private void startGameplay() {
         Scanner scanner = new Scanner(System.in);
         boolean isGuessed = false;
-        int attempt = 1;
-        int currentPlayerIndex = 0;
 
-        while (attempt <= MAX_ATTEMPTS && !isGuessed) {
+        for (int attempt = 1; attempt <= MAX_ATTEMPTS && !isGuessed; attempt++) {
             System.out.println("\nПопытка " + attempt);
 
-            Player currentPlayer = players[currentPlayerIndex];
-            try {
-                int playerGuess = inputNumber(currentPlayer, scanner);
-                if (checkGuess(currentPlayer, playerGuess, attempt)) {
-                    isGuessed = true;
+            for (Player currentPlayer : players) {
+                try {
+                    int playerGuess = inputNumber(currentPlayer, scanner);
+                    if (checkGuess(currentPlayer, playerGuess, attempt)) {
+                        isGuessed = true;
+                        break;
+                    }
+                } catch (OutOfRangeException e) {
+                    System.out.print(e.getMessage());
                 }
-            } catch (OutOfRangeException e) {
-                System.out.print(e.getMessage());
-            }
-
-            currentPlayerIndex = (currentPlayerIndex + 1) % playersCount;
-            if (currentPlayerIndex == 0) {
-                attempt++;
             }
         }
 
@@ -137,9 +133,11 @@ public class GuessNumber {
         System.out.println("\nЧисла игроков:");
         for (Player player : players) {
             int[] numbers = player.getNumbers();
-
+            if (numbers.length == 0) {
+                System.out.println("(нет чисел)");
+                continue;
+            }
             System.out.print(numbers[0]);
-
             for (int i = 1; i < numbers.length; i++) {
                 System.out.print(" " + numbers[i]);
             }
@@ -156,7 +154,7 @@ public class GuessNumber {
     private void determineWinner() {
         System.out.println("\n--- Результаты игры ---");
 
-        Arrays.sort(players, (p1, p2) -> p2.getWinsCount() - p1.getWinsCount());
+        Arrays.sort(players, Comparator.comparing(Player::getWinsCount).reversed());
 
         for (Player player : players) {
             System.out.println(player.getName() + ": " + player.getWinsCount() + " победных раундов");
