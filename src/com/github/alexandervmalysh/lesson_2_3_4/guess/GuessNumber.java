@@ -37,6 +37,10 @@ public class GuessNumber {
         }
 
         determineWinner();
+
+        for (Player player : players) {
+            player.resetWinsCount();
+        }
     }
 
     private void shufflePlayers() {

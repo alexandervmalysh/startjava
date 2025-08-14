@@ -20,14 +20,6 @@ public class Player {
         return name;
     }
 
-    public int getWinsCount() {
-        return winsCount;
-    }
-
-    public void incrementWinsCount() {
-        winsCount++;
-    }
-
     public void addNumber(int number) {
         if (currentAttempt >= MAX_ATTEMPTS) {
             throw new AttemptsExceededException("У " + name + " закончились попытки!\n");
@@ -45,9 +37,20 @@ public class Player {
         return Arrays.copyOf(numbers, currentAttempt);
     }
 
+    public int getWinsCount() {
+        return winsCount;
+    }
+
+    public void incrementWinsCount() {
+        winsCount++;
+    }
+
+    public void resetWinsCount() {
+        winsCount = 0;
+    }
+
     public void clear() {
         Arrays.fill(numbers, 0, currentAttempt, 0);
         currentAttempt = 0;
-        winsCount = 0;
     }
 }
