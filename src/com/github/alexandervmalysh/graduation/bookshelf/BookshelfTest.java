@@ -135,7 +135,7 @@ public class BookshelfTest {
                 new Book(author, "temp", Year.of(2000));
                 return author;
             } catch (IllegalArgumentException e) {
-                System.out.println("Ошибка: " + e.getMessage());
+                System.out.println(e.getMessage());
             }
         }
     }
@@ -149,7 +149,7 @@ public class BookshelfTest {
                 new Book("temp", title, Year.of(2000));
                 return title;
             } catch (IllegalArgumentException e) {
-                System.out.println("Ошибка: " + e.getMessage());
+                System.out.println(e.getMessage());
             }
         }
     }
@@ -167,7 +167,7 @@ public class BookshelfTest {
             } catch (NumberFormatException e) {
                 System.out.println("Ошибка: год должен быть целым числом");
             } catch (IllegalArgumentException e) {
-                System.out.println("Ошибка: " + e.getMessage());
+                System.out.println(e.getMessage());
             }
         }
     }
