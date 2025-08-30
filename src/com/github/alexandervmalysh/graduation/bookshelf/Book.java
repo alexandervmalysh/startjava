@@ -9,19 +9,19 @@ public class Book {
 
     public Book(String author, String title, Year year) {
         if (author == null || author.trim().isEmpty()) {
-            throw new IllegalArgumentException("Ошибка: автор не может быть пустым");
+            throw new IllegalArgumentException("автор не может быть пустым");
         }
 
         if (title == null || title.trim().isEmpty()) {
-            throw new IllegalArgumentException("Ошибка: название не может быть пустым");
+            throw new IllegalArgumentException("название не может быть пустым");
         }
 
         if (year == null) {
-            throw new IllegalArgumentException("Ошибка: год не может быть пустым");
+            throw new IllegalArgumentException("год не может быть пустым");
         }
 
         if (year.getValue() < 1800 || year.getValue() > Year.now().getValue()) {
-            throw new IllegalArgumentException("Ошибка: год издания должен быть между 1800 и текущим");
+            throw new IllegalArgumentException("год издания должен быть между 1800 и текущим");
         }
 
         this.author = author;

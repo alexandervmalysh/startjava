@@ -109,43 +109,48 @@ public class BookshelfTest {
                 System.out.println("Программа завершена");
                 System.exit(0);
                 break;
-            default:
-                System.out.println("Ошибка: некорректное значение меню: " + choice);
-                break;
         }
     }
 
     private static void addBook(Bookshelf shelf, Scanner scanner) {
         System.out.println("\n=== Добавление книги ===");
 
-        String author;
-
-        do {
-            System.out.print("Введите автора: ");
-            author = scanner.nextLine().trim();
-
-            if (author.isEmpty()) {
-                System.out.println("Ошибка: автор не может быть пустым");
-            }
-        } while (author.isEmpty());
-
-        String title;
-
-        do {
-            System.out.print("Введите название: ");
-            title = scanner.nextLine().trim();
-
-            if (title.isEmpty()) {
-                System.out.println("Ошибка: название не может быть пустым");
-            }
-        } while (title.isEmpty());
-
+        String author = readAuthor(scanner);
+        String title = readTitle(scanner);
         Year year = readYear(scanner);
 
         if (shelf.addBook(author, title, year)) {
             System.out.println("Книга успешно добавлена");
         } else {
-            System.out.println("Ошибка: не удалось добавить книгу (шкаф заполнен)");
+            System.out.println("Ошибка: не удалось добавить книгу - шкаф заполнен");
+        }
+    }
+
+    private static String readAuthor(Scanner scanner) {
+        while (true) {
+            try {
+                System.out.print("Введите автора: ");
+                String author = scanner.nextLine().trim();
+
+                new Book(author, "temp", Year.of(2000));
+                return author;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Ошибка: " + e.getMessage());
+            }
+        }
+    }
+
+    private static String readTitle(Scanner scanner) {
+        while (true) {
+            try {
+                System.out.print("Введите название: ");
+                String title = scanner.nextLine().trim();
+
+                new Book("temp", title, Year.of(2000));
+                return title;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Ошибка: " + e.getMessage());
+            }
         }
     }
 
@@ -153,16 +158,16 @@ public class BookshelfTest {
         while (true) {
             try {
                 System.out.print("Введите год издания: ");
-                int yearValue = Integer.parseInt(scanner.nextLine().trim());
+                String input = scanner.nextLine().trim();
 
-                if (yearValue >= 1800 && yearValue <= Year.now().getValue()) {
-                    return Year.of(yearValue);
-                } else {
-                    System.out.println("Ошибка: год издания должен быть между 1800 и " +
-                            Year.now().getValue());
-                }
+                int yearValue = Integer.parseInt(input);
+
+                new Book("temp", "temp", Year.of(yearValue));
+                return Year.of(yearValue);
             } catch (NumberFormatException e) {
-                System.out.println("Ошибка: год должен быть числом");
+                System.out.println("Ошибка: год должен быть целым числом");
+            } catch (IllegalArgumentException e) {
+                System.out.println("Ошибка: " + e.getMessage());
             }
         }
     }
@@ -170,19 +175,9 @@ public class BookshelfTest {
     private static void findBook(Bookshelf shelf, Scanner scanner) {
         System.out.println("\n=== Поиск книги ===");
 
-        String title;
-
-        do {
-            System.out.print("Введите название книги для поиска: ");
-            title = scanner.nextLine().trim();
-
-            if (title.isEmpty()) {
-                System.out.println("Ошибка: название книги не может быть пустым");
-            }
-        } while (title.isEmpty());
+        String title = readTitle(scanner);
 
         Book foundBook = shelf.findByTitle(title);
-
         if (foundBook != null) {
             System.out.println("Книга найдена: " + foundBook);
         } else {
@@ -193,16 +188,7 @@ public class BookshelfTest {
     private static void removeBook(Bookshelf shelf, Scanner scanner) {
         System.out.println("\n=== Удаление книги ===");
 
-        String title;
-
-        do {
-            System.out.print("Введите название книги для удаления: ");
-            title = scanner.nextLine().trim();
-
-            if (title.isEmpty()) {
-                System.out.println("Ошибка: название книги не может быть пустым");
-            }
-        } while (title.isEmpty());
+        String title = readTitle(scanner);
 
         if (shelf.removeByTitle(title)) {
             System.out.println("Книга удалена");
@@ -212,7 +198,7 @@ public class BookshelfTest {
     }
 
     private static void clearBookshelf(Bookshelf shelf) {
-        System.out.println("=== Очистка шкафа ===");
+        System.out.println("\n=== Очистка шкафа ===");
         shelf.clear();
         System.out.println("Шкаф очищен");
     }
