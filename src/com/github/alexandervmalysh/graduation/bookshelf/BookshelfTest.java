@@ -119,7 +119,9 @@ public class BookshelfTest {
         String title = readTitle(scanner);
         Year year = readYear(scanner);
 
-        if (shelf.addBook(author, title, year)) {
+        Book book = new Book(author, title, year);
+
+        if (shelf.add(book)) {
             System.out.println("Книга успешно добавлена");
         } else {
             System.out.println("Ошибка: не удалось добавить книгу - шкаф заполнен");
@@ -177,7 +179,7 @@ public class BookshelfTest {
 
         String title = readTitle(scanner);
 
-        Book foundBook = shelf.findByTitle(title);
+        Book foundBook = shelf.find(title);
         if (foundBook != null) {
             System.out.println("Книга найдена: " + foundBook);
         } else {
@@ -190,7 +192,7 @@ public class BookshelfTest {
 
         String title = readTitle(scanner);
 
-        if (shelf.removeByTitle(title)) {
+        if (shelf.remove(title)) {
             System.out.println("Книга удалена");
         } else {
             System.out.println("Книга не удалена (не найдена)");

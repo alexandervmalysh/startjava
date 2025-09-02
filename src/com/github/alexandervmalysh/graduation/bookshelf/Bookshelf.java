@@ -1,25 +1,26 @@
 package com.github.alexandervmalysh.graduation.bookshelf;
 
-import java.time.Year;
+import java.util.Arrays;
 
 public class Bookshelf {
     private static final int CAPACITY = 10;
     private final Book[] books = new Book[CAPACITY];
     private int size = 0;
 
-    public boolean addBook(String author, String title, Year year) {
-        if (size == CAPACITY) {
+    public boolean add(Book book) {
+        if (book == null) {
+            return false;
+        }
+        if (size >= CAPACITY) {
             return false;
         }
 
-        Book book = new Book(author, title, year);
-        books[size] = book;
-        size++;
+        books[size++] = book;
         return true;
     }
 
-    public Book findByTitle(String title) {
-        if (title == null || title.trim().isEmpty()) {
+    public Book find(String title) {
+        if (title == null || title.isBlank()) {
             return null;
         }
 
@@ -32,39 +33,28 @@ public class Bookshelf {
         return null;
     }
 
-    public boolean removeByTitle(String title) {
-        if (title == null || title.trim().isEmpty()) {
+    public boolean remove(String title) {
+        if (title == null || title.isBlank()) {
             return false;
         }
-
-        int indexBook = -1;
 
         for (int i = 0; i < size; i++) {
             if (books[i].getTitle().equalsIgnoreCase(title)) {
-                indexBook = i;
-                break;
+                int elementsToMove = size - i - 1;
+                if (elementsToMove > 0) {
+                    System.arraycopy(books, i + 1, books, i, elementsToMove);
+                }
+
+                books[--size] = null;
+                return true;
             }
         }
 
-        if (indexBook == -1) {
-            return false;
-        }
-
-        int elementsToMove = size - indexBook - 1;
-
-        if (elementsToMove > 0) {
-            System.arraycopy(books, indexBook + 1, books, indexBook, elementsToMove);
-        }
-
-        books[size - 1] = null;
-        size--;
-        return true;
+        return false;
     }
 
     public Book[] getAll() {
-        Book[] copy = new Book[size];
-        System.arraycopy(books, 0, copy, 0, size);
-        return copy;
+        return Arrays.copyOf(books, size);
     }
 
     public int getCount() {
@@ -76,10 +66,7 @@ public class Bookshelf {
     }
 
     public void clear() {
-        for (int i = 0; i < size; i++) {
-            books[i] = null;
-        }
-
+        Arrays.fill(books, null);
         size = 0;
     }
 }
