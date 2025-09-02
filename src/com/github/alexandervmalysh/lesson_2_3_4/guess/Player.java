@@ -16,8 +16,16 @@ public class Player {
         this.name = name;
     }
 
+    public int[] getNumbers() {
+        return Arrays.copyOf(numbers, currentAttempt);
+    }
+
     public String getName() {
         return name;
+    }
+
+    public int getWinsCount() {
+        return winsCount;
     }
 
     public void addNumber(int number) {
@@ -31,14 +39,6 @@ public class Player {
             );
         }
         numbers[currentAttempt++] = number;
-    }
-
-    public int[] getNumbers() {
-        return Arrays.copyOf(numbers, currentAttempt);
-    }
-
-    public int getWinsCount() {
-        return winsCount;
     }
 
     public void incrementWinsCount() {
