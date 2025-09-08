@@ -7,9 +7,25 @@ public class Bookshelf {
     private final Book[] books = new Book[CAPACITY];
     private int size = 0;
 
+    public int getCapacity() {
+        return CAPACITY;
+    }
+
+    public int getCount() {
+        return size;
+    }
+
+    public int getFreeSlots() {
+        return CAPACITY - size;
+    }
+
+    public Book[] getAll() {
+        return Arrays.copyOf(books, size);
+    }
+
     public boolean add(Book book) {
         if (book == null) {
-            return false;
+            throw new IllegalArgumentException("Ошибка: книга не может быть пустой");
         }
         if (size >= CAPACITY) {
             return false;
@@ -53,20 +69,8 @@ public class Bookshelf {
         return false;
     }
 
-    public Book[] getAll() {
-        return Arrays.copyOf(books, size);
-    }
-
-    public int getCount() {
-        return size;
-    }
-
-    public int getFreeSlots() {
-        return CAPACITY - size;
-    }
-
     public void clear() {
-        Arrays.fill(books, null);
+        Arrays.fill(books, 0, size, null);
         size = 0;
     }
 }

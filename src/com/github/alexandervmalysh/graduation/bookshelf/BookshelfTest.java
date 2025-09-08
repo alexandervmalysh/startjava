@@ -5,26 +5,32 @@ import java.util.Scanner;
 
 public class BookshelfTest {
     private static final int SHELF_WIDTH = 44;
+    private static final int MENU_MIN = 1;
+    private static final int MENU_MAX = 5;
+
+    private static boolean isRunning = true;
 
     public static void main(String[] args) throws InterruptedException {
         Scanner scanner = new Scanner(System.in);
-        Bookshelf shelf = new Bookshelf();
+        Bookshelf bookshelf = new Bookshelf();
 
-        typewriterPrint("Добро пожаловать в систему управления книжным шкафом\n");
+        typeWelcome();
 
-        while (true) {
-            displayBookshelf(shelf);
+        while (isRunning) {
+            displayBookshelf(bookshelf);
             showMenu();
-            int choice = readMenuChoice(scanner);
-            executeOperation(choice, shelf, scanner);
-            pauseEnter(scanner);
+            int choice = selectMenuChoice(scanner);
+            executeOperation(choice, bookshelf, scanner);
+
+            if (isRunning) {
+                pauseEnter(scanner);
+            }
         }
+        scanner.close();
     }
 
-    private static void typewriterPrint(String message) throws InterruptedException {
-        if (message == null || message.isBlank()) {
-            return;
-        }
+    private static void typeWelcome() throws InterruptedException {
+        String message = "Добро пожаловать в систему управления книжным шкафом\n";
 
         for (String ch : message.split("")) {
             System.out.print(ch);
@@ -33,18 +39,18 @@ public class BookshelfTest {
         System.out.println();
     }
 
-    private static void displayBookshelf(Bookshelf shelf) {
-        System.out.println("В шкафу книг - " + shelf.getCount() + ", свободно полок - " +
-                shelf.getFreeSlots());
+    private static void displayBookshelf(Bookshelf bookshelf) {
+        System.out.println("В шкафу книг - " + bookshelf.getCount() + ", свободно полок - " +
+                bookshelf.getFreeSlots());
 
-        if (shelf.getCount() == 0) {
+        if (bookshelf.getCount() == 0) {
             System.out.println("Шкаф пуст. Вы можете добавить в него первую книгу\n");
             return;
         }
 
-        Book[] books = shelf.getAll();
+        Book[] books = bookshelf.getAll();
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < bookshelf.getCapacity(); i++) {
             if (i < books.length) {
                 String bookInfo = books[i].toString();
                 String paddedInfo = bookInfo + " ".repeat(SHELF_WIDTH - bookInfo.length());
@@ -53,7 +59,7 @@ public class BookshelfTest {
                 System.out.println("|" + " ".repeat(SHELF_WIDTH) + "|");
             }
 
-            if (i < 9) {
+            if (i < bookshelf.getCapacity() - 1) {
                 System.out.println("|" + "-".repeat(SHELF_WIDTH) + "|");
             }
         }
@@ -61,29 +67,29 @@ public class BookshelfTest {
     }
 
     private static void showMenu() {
-        System.out.println("Выберите действие:");
-        System.out.println("1) Добавить книгу");
-        System.out.println("2) Найти книгу по названию");
-        System.out.println("3) Удалить книгу по названию");
-        System.out.println("4) Очистить шкаф");
-        System.out.println("5) Завершить");
-        System.out.print("Ваш выбор: ");
+        System.out.print("""
+                Выберите действие:
+                1) Добавить книгу
+                2) Найти книгу по названию
+                3) Удалить книгу по названию
+                4) Очистить шкаф
+                5) Завершить
+                Ваш выбор: \
+                """);
     }
 
-    private static int readMenuChoice(Scanner scanner) {
+    private static int selectMenuChoice(Scanner scanner) {
         while (true) {
             try {
                 int choice = scanner.nextInt();
                 scanner.nextLine();
 
-                if (choice >= 1 && choice <= 5) {
-                    return choice;
-                } else {
-                    System.out.println("Ошибка: неверное значение меню (" + choice + "). " +
-                            "Допустимые значения: 1-5");
-                    System.out.print("Повторите ввод: ");
-                }
-            } catch (Exception e) {
+                if (choice >= MENU_MIN && choice <= MENU_MAX) return choice;
+
+                System.out.println("Ошибка: неверное значение меню (" + choice + "). " +
+                        "Допустимые значения: " + MENU_MIN + "-" + MENU_MAX);
+                System.out.print("Повторите ввод: ");
+            } catch (RuntimeException e) {
                 System.out.println("Ошибка: значение должно быть целым числом");
                 scanner.nextLine();
                 System.out.print("Повторите ввод: ");
@@ -91,95 +97,39 @@ public class BookshelfTest {
         }
     }
 
-    private static void executeOperation(int choice, Bookshelf shelf, Scanner scanner) {
+    private static void executeOperation(int choice, Bookshelf bookshelf, Scanner scanner) {
         switch (choice) {
-            case 1:
-                addBook(shelf, scanner);
-                break;
-            case 2:
-                findBook(shelf, scanner);
-                break;
-            case 3:
-                removeBook(shelf, scanner);
-                break;
-            case 4:
-                clearBookshelf(shelf);
-                break;
-            case 5:
-                System.out.println("Программа завершена");
-                System.exit(0);
-                break;
+            case 1 -> addBook(bookshelf, scanner);
+            case 2 -> findBook(bookshelf, scanner);
+            case 3 -> removeBook(bookshelf, scanner);
+            case 4 -> clearBookshelf(bookshelf);
+            case 5 -> exitProgram();
+            default -> System.out.println("Неизвестная операция");
         }
     }
 
-    private static void addBook(Bookshelf shelf, Scanner scanner) {
+    private static void addBook(Bookshelf bookshelf, Scanner scanner) {
         System.out.println("\n=== Добавление книги ===");
 
-        String author = readAuthor(scanner);
-        String title = readTitle(scanner);
-        Year year = readYear(scanner);
+        String author = inputAuthor(scanner);
+        String title = inputTitle(scanner);
+        Year year = inputYear(scanner);
 
         Book book = new Book(author, title, year);
 
-        if (shelf.add(book)) {
+        if (bookshelf.add(book)) {
             System.out.println("Книга успешно добавлена");
         } else {
             System.out.println("Ошибка: не удалось добавить книгу - шкаф заполнен");
         }
     }
 
-    private static String readAuthor(Scanner scanner) {
-        while (true) {
-            try {
-                System.out.print("Введите автора: ");
-                String author = scanner.nextLine().trim();
-
-                new Book(author, "temp", Year.of(2000));
-                return author;
-            } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-    }
-
-    private static String readTitle(Scanner scanner) {
-        while (true) {
-            try {
-                System.out.print("Введите название: ");
-                String title = scanner.nextLine().trim();
-
-                new Book("temp", title, Year.of(2000));
-                return title;
-            } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-    }
-
-    private static Year readYear(Scanner scanner) {
-        while (true) {
-            try {
-                System.out.print("Введите год издания: ");
-                String input = scanner.nextLine().trim();
-
-                int yearValue = Integer.parseInt(input);
-
-                new Book("temp", "temp", Year.of(yearValue));
-                return Year.of(yearValue);
-            } catch (NumberFormatException e) {
-                System.out.println("Ошибка: год должен быть целым числом");
-            } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-    }
-
-    private static void findBook(Bookshelf shelf, Scanner scanner) {
+    private static void findBook(Bookshelf bookshelf, Scanner scanner) {
         System.out.println("\n=== Поиск книги ===");
 
-        String title = readTitle(scanner);
+        String title = inputTitle(scanner);
 
-        Book foundBook = shelf.find(title);
+        Book foundBook = bookshelf.find(title);
         if (foundBook != null) {
             System.out.println("Книга найдена: " + foundBook);
         } else {
@@ -187,27 +137,86 @@ public class BookshelfTest {
         }
     }
 
-    private static void removeBook(Bookshelf shelf, Scanner scanner) {
+    private static void removeBook(Bookshelf bookshelf, Scanner scanner) {
         System.out.println("\n=== Удаление книги ===");
 
-        String title = readTitle(scanner);
+        String title = inputTitle(scanner);
 
-        if (shelf.remove(title)) {
+        if (bookshelf.remove(title)) {
             System.out.println("Книга удалена");
         } else {
             System.out.println("Книга не удалена (не найдена)");
         }
     }
 
-    private static void clearBookshelf(Bookshelf shelf) {
+    private static void clearBookshelf(Bookshelf bookshelf) {
         System.out.println("\n=== Очистка шкафа ===");
-        shelf.clear();
+        bookshelf.clear();
         System.out.println("Шкаф очищен");
+    }
+
+    private static void exitProgram() {
+        System.out.println("Программа завершена");
+        isRunning = false;
+    }
+
+    private static String inputTitle(Scanner scanner) {
+        while (true) {
+            System.out.print("Введите название: ");
+            String title = scanner.nextLine().trim();
+
+            if (!title.isBlank()) {
+                return title;
+            }
+            System.out.println("Ошибка: название не может быть пустым");
+        }
+    }
+
+    private static String inputAuthor(Scanner scanner) {
+        while (true) {
+            System.out.print("Введите автора: ");
+            String author = scanner.nextLine().trim();
+
+            if (!author.isBlank()) {
+                return author;
+            }
+            System.out.println("Ошибка: автор не может быть пустым");
+        }
+    }
+
+    private static Year inputYear(Scanner scanner) {
+        Year min = Book.getMinYear();
+
+        while (true) {
+            System.out.print("Введите год издания: ");
+            String input = scanner.nextLine().trim();
+
+            if (input.isBlank()) {
+                System.out.println("Ошибка: год не может быть пустым");
+                continue;
+            }
+            try {
+                Year year = Year.of(Integer.parseInt(input));
+                if (year.isBefore(min) || year.isAfter(Year.now())) {
+                    System.out.println("Ошибка: год издания должен быть между 1800 и текущим");
+                    continue;
+                }
+                return year;
+            } catch (NumberFormatException e) {
+                System.out.println("Ошибка: год должен быть целым числом");
+            }
+        }
     }
 
     private static void pauseEnter(Scanner scanner) {
         System.out.println("Для продолжения работы нажмите клавишу <Enter>");
-        scanner.nextLine();
+        while (true) {
+            String line = scanner.nextLine();
+            if (line.isEmpty()) {
+                break;
+            }
+            System.out.println("Ошибка: ввод должен быть пустым. Нажмите клавишу <Enter>");
+        }
         System.out.println();
     }
 }

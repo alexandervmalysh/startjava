@@ -25,13 +25,17 @@ public class Book {
         Year now = Year.now();
 
         if (year.isBefore(MIN_YEAR) || year.isAfter(now)) {
-            throw new IllegalArgumentException("Ошибка: год издания должен быть между " + MIN_YEAR +
-                    " и текущим");
+            throw new IllegalArgumentException("Ошибка: год издания должен быть между " +
+                    MIN_YEAR + " и текущим");
         }
 
         this.author = author;
         this.title = title;
         this.year = year;
+    }
+
+    public static Year getMinYear() {
+        return MIN_YEAR;
     }
 
     public String getTitle() {
