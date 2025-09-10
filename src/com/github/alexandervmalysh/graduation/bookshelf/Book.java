@@ -11,15 +11,15 @@ public class Book {
 
     public Book(String author, String title, Year year) {
         if (author == null || author.isBlank()) {
-            throw new IllegalArgumentException("Ошибка: автор не может быть пустым");
+            throw new IllegalArgumentException("Ошибка: автор книги не может быть пустым");
         }
 
         if (title == null || title.isBlank()) {
-            throw new IllegalArgumentException("Ошибка: название не может быть пустым");
+            throw new IllegalArgumentException("Ошибка: название книги не может быть пустым");
         }
 
         if (year == null) {
-            throw new IllegalArgumentException("Ошибка: год не может быть пустым");
+            throw new IllegalArgumentException("Ошибка: год издания не может быть пустым");
         }
 
         Year now = Year.now();
