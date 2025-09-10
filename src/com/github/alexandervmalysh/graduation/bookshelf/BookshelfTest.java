@@ -1,14 +1,13 @@
 package com.github.alexandervmalysh.graduation.bookshelf;
 
 import java.time.Year;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class BookshelfTest {
     private static final int SHELF_WIDTH = 44;
-    private static final int MENU_MIN = 1;
-    private static final int MENU_MAX = 5;
-
-    private static boolean isRunning = true;
+    private static final int MIN_MENU_VALUE = 1;
+    private static final int MAX_MENU_VALUE = 5;
 
     public static void main(String[] args) throws InterruptedException {
         Scanner scanner = new Scanner(System.in);
@@ -16,15 +15,19 @@ public class BookshelfTest {
 
         typeWelcome();
 
-        while (isRunning) {
+        while (true) {
             displayBookshelf(bookshelf);
             showMenu();
-            int choice = selectMenuChoice(scanner);
+            int choice = selectMenu(scanner);
+
+            if (choice == 5) {
+                System.out.println("Программа завершена");
+                break;
+            }
+
             executeOperation(choice, bookshelf, scanner);
 
-            if (isRunning) {
-                pauseEnter(scanner);
-            }
+            pauseEnter(scanner);
         }
         scanner.close();
     }
@@ -50,7 +53,7 @@ public class BookshelfTest {
 
         Book[] books = bookshelf.getAll();
 
-        for (int i = 0; i < bookshelf.getCapacity(); i++) {
+        for (int i = 0; i < Bookshelf.CAPACITY; i++) {
             if (i < books.length) {
                 String bookInfo = books[i].toString();
                 String paddedInfo = bookInfo + " ".repeat(SHELF_WIDTH - bookInfo.length());
@@ -59,7 +62,7 @@ public class BookshelfTest {
                 System.out.println("|" + " ".repeat(SHELF_WIDTH) + "|");
             }
 
-            if (i < bookshelf.getCapacity() - 1) {
+            if (i < Bookshelf.CAPACITY - 1) {
                 System.out.println("|" + "-".repeat(SHELF_WIDTH) + "|");
             }
         }
@@ -78,18 +81,18 @@ public class BookshelfTest {
                 """);
     }
 
-    private static int selectMenuChoice(Scanner scanner) {
+    private static int selectMenu(Scanner scanner) {
         while (true) {
             try {
                 int choice = scanner.nextInt();
                 scanner.nextLine();
 
-                if (choice >= MENU_MIN && choice <= MENU_MAX) return choice;
+                if (choice >= MIN_MENU_VALUE && choice <= MAX_MENU_VALUE) return choice;
 
                 System.out.println("Ошибка: неверное значение меню (" + choice + "). " +
-                        "Допустимые значения: " + MENU_MIN + "-" + MENU_MAX);
+                        "Допустимые значения: " + MIN_MENU_VALUE + "-" + MAX_MENU_VALUE);
                 System.out.print("Повторите ввод: ");
-            } catch (RuntimeException e) {
+            } catch (InputMismatchException e) {
                 System.out.println("Ошибка: значение должно быть целым числом");
                 scanner.nextLine();
                 System.out.print("Повторите ввод: ");
@@ -103,7 +106,6 @@ public class BookshelfTest {
             case 2 -> findBook(bookshelf, scanner);
             case 3 -> removeBook(bookshelf, scanner);
             case 4 -> clearBookshelf(bookshelf);
-            case 5 -> exitProgram();
             default -> System.out.println("Неизвестная операция");
         }
     }
@@ -155,11 +157,6 @@ public class BookshelfTest {
         System.out.println("Шкаф очищен");
     }
 
-    private static void exitProgram() {
-        System.out.println("Программа завершена");
-        isRunning = false;
-    }
-
     private static String inputTitle(Scanner scanner) {
         while (true) {
             System.out.print("Введите название: ");
@@ -185,8 +182,6 @@ public class BookshelfTest {
     }
 
     private static Year inputYear(Scanner scanner) {
-        Year min = Book.getMinYear();
-
         while (true) {
             System.out.print("Введите год издания: ");
             String input = scanner.nextLine().trim();
@@ -197,7 +192,7 @@ public class BookshelfTest {
             }
             try {
                 Year year = Year.of(Integer.parseInt(input));
-                if (year.isBefore(min) || year.isAfter(Year.now())) {
+                if (year.isBefore(Book.MIN_YEAR) || year.isAfter(Year.now())) {
                     System.out.println("Ошибка: год издания должен быть между 1800 и текущим");
                     continue;
                 }

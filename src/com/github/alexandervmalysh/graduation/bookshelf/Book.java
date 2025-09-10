@@ -3,7 +3,7 @@ package com.github.alexandervmalysh.graduation.bookshelf;
 import java.time.Year;
 
 public class Book {
-    private static final Year MIN_YEAR = Year.of(1800);
+    public static final Year MIN_YEAR = Year.of(1800);
 
     private final String author;
     private final String title;
@@ -32,10 +32,6 @@ public class Book {
         this.author = author;
         this.title = title;
         this.year = year;
-    }
-
-    public static Year getMinYear() {
-        return MIN_YEAR;
     }
 
     public String getTitle() {

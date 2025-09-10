@@ -3,13 +3,9 @@ package com.github.alexandervmalysh.graduation.bookshelf;
 import java.util.Arrays;
 
 public class Bookshelf {
-    private static final int CAPACITY = 10;
+    public static final int CAPACITY = 10;
     private final Book[] books = new Book[CAPACITY];
     private int size = 0;
-
-    public int getCapacity() {
-        return CAPACITY;
-    }
 
     public int getCount() {
         return size;
