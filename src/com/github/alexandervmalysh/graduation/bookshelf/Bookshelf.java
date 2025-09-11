@@ -15,26 +15,12 @@ public class Bookshelf {
         return size;
     }
 
-    public int getFreeSlots() {
+    public int getFreeShelves() {
         return CAPACITY - size;
     }
 
     public int getMaxBookLength() {
         return maxBookLength;
-    }
-
-    public Book[] getAll() {
-        return Arrays.copyOf(books, size);
-    }
-
-    private void recalculateMaxLength() {
-        maxBookLength = 0;
-        for (int i = 0; i < size; i++) {
-            int bookLength = books[i].toString().length();
-            if (bookLength > maxBookLength) {
-                maxBookLength = bookLength;
-            }
-        }
     }
 
     public void add(Book book) {
@@ -46,34 +32,32 @@ public class Bookshelf {
         }
 
         books[size++] = book;
-        recalculateMaxLength();
+        int newBookLength = book.toString().length();
+        maxBookLength = Math.max(maxBookLength, newBookLength);
     }
 
-    public Book[][] find(String title) {
+    public Book[] find(String title) {
         if (title == null || title.isBlank()) {
-            return new Book[0][0];
+            return new Book[0];
         }
 
-        int foundCount = 0;
+        int foundBufferCapacity = 5;
+        Book[] foundBooks = new Book[foundBufferCapacity];
+        int foundBooksCount = 0;
+
         for (int i = 0; i < size; i++) {
             if (books[i].getTitle().equalsIgnoreCase(title)) {
-                foundCount++;
+                if (foundBooksCount == foundBufferCapacity) {
+                    foundBufferCapacity = Math.max(foundBufferCapacity + 1,
+                            (int) Math.ceil(foundBufferCapacity * 1.5));
+                    foundBooks = Arrays.copyOf(foundBooks, foundBufferCapacity);
+                }
+                foundBooks[foundBooksCount++] = books[i];
             }
         }
 
-        if (foundCount == 0) {
-            return new Book[0][0];
-        }
-
-        Book[][] result = new Book[foundCount][1];
-        int index = 0;
-        for (int i = 0; i < size; i++) {
-            if (books[i].getTitle().equalsIgnoreCase(title)) {
-                result[index++][0] = books[i];
-            }
-        }
-
-        return result;
+        return (foundBooksCount == foundBooks.length) ? foundBooks :
+                Arrays.copyOf(foundBooks, foundBooksCount);
     }
 
     public void remove(String title) {
@@ -81,37 +65,63 @@ public class Bookshelf {
             throw new BookNotFoundException("Ошибка: название книги не может быть пустым");
         }
 
-        int write = 0;
+        int writeIndex = 0;
+        int readIndex = 0;
         int removedCount = 0;
         boolean needsRecalculateMax = false;
 
-        for (int read = 0; read < size; read++) {
-            Book current = books[read];
-            if (current.getTitle().equalsIgnoreCase(title)) {
-                removedCount++;
-                if (current.toString().length() == maxBookLength) {
+        while (readIndex < size) {
+            int blockStart = readIndex;
+
+            while (readIndex < size && !books[readIndex].getTitle().equalsIgnoreCase(title)) {
+                readIndex++;
+            }
+
+            int blockLen = readIndex - blockStart;
+
+            if (blockLen > 0) {
+                System.arraycopy(books, blockStart, books, writeIndex, blockLen);
+                writeIndex += blockLen;
+            }
+
+            int removedStart = readIndex;
+
+            while (readIndex < size && books[readIndex].getTitle().equalsIgnoreCase(title)) {
+                if (books[readIndex].toString().length() == maxBookLength) {
                     needsRecalculateMax = true;
                 }
-            } else {
-                books[write++] = current;
+                readIndex++;
             }
+
+            removedCount += (readIndex - removedStart);
         }
 
         if (removedCount == 0) {
             throw new BookNotFoundException("Ошибка: книга с названием \"" + title + "\" не найдена");
         }
 
-        Arrays.fill(books, write, size, null);
-        size = write;
+        Arrays.fill(books, writeIndex, size, null);
+        size = writeIndex;
 
         if (needsRecalculateMax) {
             recalculateMaxLength();
         }
     }
 
+    public Book[] getAll() {
+        return Arrays.copyOf(books, size);
+    }
+
     public void clear() {
         Arrays.fill(books, 0, size, null);
         size = 0;
         maxBookLength = 0;
+    }
+
+    private void recalculateMaxLength() {
+        maxBookLength = 0;
+        for (int i = 0; i < size; i++) {
+            maxBookLength = Math.max(maxBookLength, books[i].toString().length());
+        }
     }
 }

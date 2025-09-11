@@ -37,7 +37,6 @@ public class BookshelfTest {
             System.out.print(ch);
             Thread.sleep(80);
         }
-
         System.out.println();
     }
 
@@ -48,24 +47,31 @@ public class BookshelfTest {
         }
 
         System.out.println("В шкафу книг - " + bookshelf.getCount() +
-                ", свободно полок - " + bookshelf.getFreeSlots());
+                ", свободно полок - " + bookshelf.getFreeShelves());
 
-        int shelfContentWidth = bookshelf.getMaxBookLength();
         Book[] books = bookshelf.getAll();
-        String[] contents = new String[Bookshelf.CAPACITY];
-
-        for (int i = 0; i < contents.length; i++) {
-            String bookInfo = (i < books.length) ? books[i].toString() : "";
-            contents[i] = bookInfo + " ".repeat(shelfContentWidth - bookInfo.length());
-        }
+        int shelfContentWidth = bookshelf.getMaxBookLength();
 
         StringBuilder sb = new StringBuilder();
         String divider = "|" + "-".repeat(shelfContentWidth) + "|";
 
-        for (String row : contents) {
-            sb.append("|").append(row).append("|").append(System.lineSeparator());
-            sb.append(divider).append(System.lineSeparator());
+        for (int i = 0; i < books.length; i++) {
+            String row = books[i].toString();
+            sb.append("|")
+                    .append(row)
+                    .append(" ".repeat(shelfContentWidth - row.length()))
+                    .append("|")
+                    .append(System.lineSeparator());
+
+            if (i < books.length - 1) {
+                sb.append(divider).append(System.lineSeparator());
+            }
         }
+
+        sb.append("|")
+                .append(" ".repeat(shelfContentWidth))
+                .append("|")
+                .append(System.lineSeparator());
 
         System.out.print(sb);
         System.out.println();
@@ -73,27 +79,18 @@ public class BookshelfTest {
 
     private static MenuOption[] getVisibleOptions(Bookshelf bookshelf) {
         int count = bookshelf.getCount();
+
         if (count == 0) {
-            return new MenuOption[] {
-                    MenuOption.ADD_BOOK,
-                    MenuOption.EXIT
-            };
-        } else if (count >= Bookshelf.CAPACITY) {
-            return new MenuOption[] {
-                    MenuOption.FIND_BOOK,
-                    MenuOption.REMOVE_BOOK,
-                    MenuOption.CLEAR_BOOKSHELF,
-                    MenuOption.EXIT
-            };
-        } else {
-            return new MenuOption[] {
-                    MenuOption.ADD_BOOK,
-                    MenuOption.FIND_BOOK,
-                    MenuOption.REMOVE_BOOK,
-                    MenuOption.CLEAR_BOOKSHELF,
-                    MenuOption.EXIT
+            return new MenuOption[]{MenuOption.ADD_BOOK, MenuOption.EXIT};
+        }
+
+        if (count >= Bookshelf.CAPACITY) {
+            return new MenuOption[]{
+                    MenuOption.FIND_BOOK, MenuOption.REMOVE_BOOK, MenuOption.CLEAR_BOOKSHELF, MenuOption.EXIT
             };
         }
+
+        return MenuOption.values();
     }
 
     private static void showMenu(Bookshelf bookshelf) {
@@ -152,7 +149,7 @@ public class BookshelfTest {
         System.out.println("\n=== Поиск книги ===");
 
         String title = inputTitle(scanner);
-        Book[][] found = bookshelf.find(title);
+        Book[] found = bookshelf.find(title);
 
         if (found.length == 0) {
             System.out.println("Ошибка: книга не найдена");
@@ -162,7 +159,7 @@ public class BookshelfTest {
         System.out.println("Найдено: " + found.length);
 
         for (int i = 0; i < found.length; i++) {
-            System.out.println((i + 1) + ") " + found[i][0]);
+            System.out.println((i + 1) + ") " + found[i]);
         }
     }
 
