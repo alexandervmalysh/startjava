@@ -31,8 +31,8 @@ public enum MenuOption {
             throw new InvalidMenuChoiceException("Ошибка: значение должно быть целым числом");
         }
 
-        final int min = 1;
-        final int max = options.length;
+        final int firstAllowedIndex = 1;
+        final int lastAllowedIndex = options.length;
         final int choice;
 
         try {
@@ -41,9 +41,9 @@ public enum MenuOption {
             throw new InvalidMenuChoiceException("Ошибка: значение должно быть целым числом");
         }
 
-        if (choice < min || choice > max) {
+        if (choice < firstAllowedIndex || choice > lastAllowedIndex) {
             throw new InvalidMenuChoiceException("Ошибка: Неверное значение меню (" + choice + "). " +
-                    "Допустимые значения: " + min + "-" + max
+                    "Допустимые значения: " + firstAllowedIndex + "-" + lastAllowedIndex
             );
         }
 
