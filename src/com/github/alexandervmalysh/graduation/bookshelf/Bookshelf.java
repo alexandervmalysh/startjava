@@ -65,27 +65,29 @@ public class Bookshelf {
         }
 
         int writeIndex = 0;
-        boolean needsRecalculateMax = false;
+        boolean removed = false;
 
         for (int readIndex = 0; readIndex < size; readIndex++) {
             if (books[readIndex].getTitle().equalsIgnoreCase(title)) {
+                removed = true;
                 if (books[readIndex].toString().length() == bookshelfLength) {
-                    needsRecalculateMax = true;
+                    removed = true;
                 }
             } else {
-                books[writeIndex++] = books[readIndex];
+                if (writeIndex != readIndex) {
+                    System.arraycopy(books, readIndex, books, writeIndex, 1);
+                }
+                writeIndex++;
             }
         }
 
-        if (writeIndex == size) {
+        if (!removed) {
             throw new BookNotFoundException("Ошибка: книга с названием \"" + title + "\" не найдена");
         }
 
         size = writeIndex;
 
-        if (needsRecalculateMax) {
-            recalculateMaxLength();
-        }
+        recalculateMaxLength();
     }
 
     public Book[] getAll() {
@@ -99,6 +101,11 @@ public class Bookshelf {
     }
 
     private void recalculateMaxLength() {
+        if (size == 0) {
+            bookshelfLength = 0;
+            return;
+        }
+
         bookshelfLength = 0;
         for (int i = 0; i < size; i++) {
             bookshelfLength = Math.max(bookshelfLength, books[i].toString().length());
