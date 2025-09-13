@@ -5,11 +5,12 @@ import com.github.alexandervmalysh.graduation.bookshelf.exception.BookshelfFullE
 import java.util.Arrays;
 
 public class Bookshelf {
+    private static final int DEFAULT_SEARCH_CAPACITY = 5;
     public static final int CAPACITY = 10;
 
     private final Book[] books = new Book[CAPACITY];
     private int size = 0;
-    private int maxBookLength = 0;
+    private int bookshelfLength = 0;
 
     public int getCount() {
         return size;
@@ -19,8 +20,8 @@ public class Bookshelf {
         return CAPACITY - size;
     }
 
-    public int getMaxBookLength() {
-        return maxBookLength;
+    public int getBookshelfLength() {
+        return bookshelfLength;
     }
 
     public void add(Book book) {
@@ -33,7 +34,7 @@ public class Bookshelf {
 
         books[size++] = book;
         int newBookLength = book.toString().length();
-        maxBookLength = Math.max(maxBookLength, newBookLength);
+        bookshelfLength = Math.max(bookshelfLength, newBookLength);
     }
 
     public Book[] find(String title) {
@@ -41,23 +42,21 @@ public class Bookshelf {
             return new Book[0];
         }
 
-        int foundBufferCapacity = 5;
-        Book[] foundBooks = new Book[foundBufferCapacity];
+        int searchCapacity = DEFAULT_SEARCH_CAPACITY;
+        Book[] foundBooks = new Book[searchCapacity];
         int foundBooksCount = 0;
 
         for (int i = 0; i < size; i++) {
             if (books[i].getTitle().equalsIgnoreCase(title)) {
-                if (foundBooksCount == foundBufferCapacity) {
-                    foundBufferCapacity = Math.max(foundBufferCapacity + 1,
-                            (int) Math.ceil(foundBufferCapacity * 1.5));
-                    foundBooks = Arrays.copyOf(foundBooks, foundBufferCapacity);
+                if (foundBooksCount == searchCapacity) {
+                    searchCapacity = (int) Math.ceil(searchCapacity * 1.5);
+                    foundBooks = Arrays.copyOf(foundBooks, searchCapacity);
                 }
                 foundBooks[foundBooksCount++] = books[i];
             }
         }
 
-        return (foundBooksCount == foundBooks.length) ? foundBooks :
-                Arrays.copyOf(foundBooks, foundBooksCount);
+        return Arrays.copyOf(foundBooks, foundBooksCount);
     }
 
     public void remove(String title) {
@@ -66,41 +65,22 @@ public class Bookshelf {
         }
 
         int writeIndex = 0;
-        int readIndex = 0;
-        int removedCount = 0;
         boolean needsRecalculateMax = false;
 
-        while (readIndex < size) {
-            int blockStart = readIndex;
-
-            while (readIndex < size && !books[readIndex].getTitle().equalsIgnoreCase(title)) {
-                readIndex++;
-            }
-
-            int blockLen = readIndex - blockStart;
-
-            if (blockLen > 0) {
-                System.arraycopy(books, blockStart, books, writeIndex, blockLen);
-                writeIndex += blockLen;
-            }
-
-            int removedStart = readIndex;
-
-            while (readIndex < size && books[readIndex].getTitle().equalsIgnoreCase(title)) {
-                if (books[readIndex].toString().length() == maxBookLength) {
+        for (int readIndex = 0; readIndex < size; readIndex++) {
+            if (books[readIndex].getTitle().equalsIgnoreCase(title)) {
+                if (books[readIndex].toString().length() == bookshelfLength) {
                     needsRecalculateMax = true;
                 }
-                readIndex++;
+            } else {
+                books[writeIndex++] = books[readIndex];
             }
-
-            removedCount += (readIndex - removedStart);
         }
 
-        if (removedCount == 0) {
+        if (writeIndex == size) {
             throw new BookNotFoundException("Ошибка: книга с названием \"" + title + "\" не найдена");
         }
 
-        Arrays.fill(books, writeIndex, size, null);
         size = writeIndex;
 
         if (needsRecalculateMax) {
@@ -115,13 +95,13 @@ public class Bookshelf {
     public void clear() {
         Arrays.fill(books, 0, size, null);
         size = 0;
-        maxBookLength = 0;
+        bookshelfLength = 0;
     }
 
     private void recalculateMaxLength() {
-        maxBookLength = 0;
+        bookshelfLength = 0;
         for (int i = 0; i < size; i++) {
-            maxBookLength = Math.max(maxBookLength, books[i].toString().length());
+            bookshelfLength = Math.max(bookshelfLength, books[i].toString().length());
         }
     }
 }

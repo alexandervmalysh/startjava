@@ -3,10 +3,10 @@ package com.github.alexandervmalysh.graduation.bookshelf;
 import com.github.alexandervmalysh.graduation.bookshelf.exception.InvalidMenuChoiceException;
 
 public enum MenuOption {
-    ADD_BOOK(1, "Добавить книгу"),
-    FIND_BOOK(2, "Найти книгу по названию"),
-    REMOVE_BOOK(3, "Удалить книгу по названию"),
-    CLEAR_BOOKSHELF(4, "Очистить шкаф"),
+    ADD(1, "Добавить книгу"),
+    FIND(2, "Найти книгу по названию"),
+    REMOVE(3, "Удалить книгу по названию"),
+    CLEAR(4, "Очистить шкаф"),
     EXIT(5, "Завершить");
 
     private final int number;

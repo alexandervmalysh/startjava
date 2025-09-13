@@ -50,22 +50,20 @@ public class BookshelfTest {
                 ", свободно полок - " + bookshelf.getFreeShelves());
 
         Book[] books = bookshelf.getAll();
-        int shelfContentWidth = bookshelf.getMaxBookLength();
+        int shelfContentWidth = bookshelf.getBookshelfLength();
 
         StringBuilder sb = new StringBuilder();
         String divider = "|" + "-".repeat(shelfContentWidth) + "|";
 
-        for (int i = 0; i < books.length; i++) {
-            String row = books[i].toString();
+        for (Book book : books) {
+            String row = book.toString();
             sb.append("|")
                     .append(row)
                     .append(" ".repeat(shelfContentWidth - row.length()))
                     .append("|")
+                    .append(System.lineSeparator())
+                    .append(divider)
                     .append(System.lineSeparator());
-
-            if (i < books.length - 1) {
-                sb.append(divider).append(System.lineSeparator());
-            }
         }
 
         sb.append("|")
@@ -81,13 +79,11 @@ public class BookshelfTest {
         int count = bookshelf.getCount();
 
         if (count == 0) {
-            return new MenuOption[]{MenuOption.ADD_BOOK, MenuOption.EXIT};
+            return new MenuOption[]{MenuOption.ADD, MenuOption.EXIT};
         }
 
         if (count >= Bookshelf.CAPACITY) {
-            return new MenuOption[]{
-                    MenuOption.FIND_BOOK, MenuOption.REMOVE_BOOK, MenuOption.CLEAR_BOOKSHELF, MenuOption.EXIT
-            };
+            return new MenuOption[]{MenuOption.FIND, MenuOption.REMOVE, MenuOption.CLEAR, MenuOption.EXIT};
         }
 
         return MenuOption.values();
@@ -121,10 +117,10 @@ public class BookshelfTest {
 
     private static void executeOperation(MenuOption selectedOption, Bookshelf bookshelf, Scanner scanner) {
         switch (selectedOption) {
-            case ADD_BOOK -> addBook(bookshelf, scanner);
-            case FIND_BOOK -> findBook(bookshelf, scanner);
-            case REMOVE_BOOK -> removeBook(bookshelf, scanner);
-            case CLEAR_BOOKSHELF -> clearBookshelf(bookshelf);
+            case ADD -> addBook(bookshelf, scanner);
+            case FIND -> findBook(bookshelf, scanner);
+            case REMOVE -> removeBook(bookshelf, scanner);
+            case CLEAR -> clearBookshelf(bookshelf);
             case EXIT -> System.out.println("Программа завершена");
             default -> throw new InvalidMenuChoiceException("Ошибка: неизвестная операция");
         }
